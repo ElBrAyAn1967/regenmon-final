@@ -1,0 +1,136 @@
+// ==============================================
+// PRISMA SCHEMA - REGENMON HUB
+// ==============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==============================================
+// TABLA: RegisteredRegenmon
+// Regenmons registrados en el hub público
+// ==============================================
+model RegisteredRegenmon {
+  id              String   @id @default(cuid())
+  appUrl          String   @unique
+  name            String
+  ownerName       String
+  ownerEmail      String?
+  privyUserId     String?  // ID de usuario de Privy (autenticación con Google)
+  sprite          String
+  stage           Int      @default(1)
+  stats           Json     // { happiness, energy, hunger }
+  totalPoints     Int      @default(0)
+  balance         Int      @default(0)        // $FRUTA tokens (controlados por backend)
+
+  // Metadata
+  registeredAt    DateTime @default(now())
+  lastSynced      DateTime @default(now())
+  isActive        Boolean  @default(true)
+
+  // Relaciones
+  snapshots       Snapshot[]
+  visits          Visit[]
+  transactions    TokenTransaction[]
+
+  @@index([registeredAt])
+  @@index([totalPoints])
+  @@index([balance])
+  @@index([ownerEmail])
+}
+
+// ==============================================
+// TABLA: Snapshot
+// Historial de balance y puntos (sincronización)
+// ==============================================
+model Snapshot {
+  id              String   @id @default(cuid())
+  regenmonId      String
+  regenmon        RegisteredRegenmon @relation(fields: [regenmonId], references: [id], onDelete: Cascade)
+
+  balance         Int
+  totalPoints     Int
+  trainingHistory Json     // Array de evaluaciones
+
+  createdAt       DateTime @default(now())
+
+  @@index([regenmonId, createdAt])
+}
+
+// ==============================================
+// TABLA: Visit
+// Analytics de visitas a cada Regenmon
+// ==============================================
+model Visit {
+  id              String   @id @default(cuid())
+  regenmonId      String
+  regenmon        RegisteredRegenmon @relation(fields: [regenmonId], references: [id], onDelete: Cascade)
+
+  visitorIp       String?
+  visitorCountry  String?
+  referrer        String?
+
+  createdAt       DateTime @default(now())
+
+  @@index([regenmonId, createdAt])
+}
+
+// ==============================================
+// TABLA: AdminLog
+// Logs de acciones del admin
+// ==============================================
+model AdminLog {
+  id              String   @id @default(cuid())
+  action          String   // "manual_register", "delete", "update"
+  details         Json
+  adminIp         String?
+
+  createdAt       DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+// ==============================================
+// TABLA: TokenTransaction
+// Historial de transacciones de tokens $FRUTA
+// ==============================================
+model TokenTransaction {
+  id              String   @id @default(cuid())
+  regenmonId      String
+  regenmon        RegisteredRegenmon @relation(fields: [regenmonId], references: [id], onDelete: Cascade)
+
+  type            String   // "reward", "feed", "evolution", "admin_adjust"
+  amount          Int      // Cantidad de tokens (+ gana, - gasta)
+  balanceBefore   Int      // Balance antes de la transacción
+  balanceAfter    Int      // Balance después de la transacción
+
+  reason          String?  // "Training score: 85", "Fed Regenmon", "Evolution bonus", etc.
+  metadata        Json?    // Data adicional { score, category, etc }
+
+  createdAt       DateTime @default(now())
+
+  @@index([regenmonId, createdAt])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ==============================================
+// TABLA: TokenSystemConfig
+// Configuración global del sistema de tokens
+// ==============================================
+model TokenSystemConfig {
+  id              String   @id @default(cuid())
+
+  totalSupply     Int      @default(100000)  // Total de tokens $FRUTA
+  rewardRate      Float    @default(0.5)     // Tokens por punto (1 punto = 0.5 $FRUTA)
+  feedCost        Int      @default(10)      // Costo de alimentar
+  evolutionBonus  Int      @default(100)     // Bonus por evolucionar
+
+  updatedAt       DateTime @updatedAt
+  updatedBy       String?  // Email del admin que actualizó
+}

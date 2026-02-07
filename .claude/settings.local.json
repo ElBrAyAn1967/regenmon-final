@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(test:*)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma init:*)",
+      "Bash(curl:*)",
+      "Bash(npx prisma migrate:*)",
+      "Bash(del:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(node test-db.js:*)",
+      "Bash(pkill:*)",
+      "Bash(taskkill:*)",
+      "Bash(timeout /t 5 /nobreak)",
+      "WebFetch(domain:bootcamp.frutero.club)",
+      "Bash(node test-gemini.js:*)",
+      "Bash(node test-gemini-curl.js:*)",
+      "Bash(node test-gemini-final.js:*)",
+      "Bash(node:*)",
+      "Bash(bun add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git rm:*)",
+      "Bash(git reset:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git fetch:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}
