@@ -1,13 +1,13 @@
 // ==============================================
-// CHAT API - Session 2 (Claude AI)
+// CHAT API - Session 2 (OpenAI)
 // ==============================================
-// Endpoint para chat con personalidad dinámica usando Claude
+// Endpoint para chat con personalidad dinámica usando OpenAI
 
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || "",
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || "",
 });
 
 export async function POST(req: NextRequest) {
@@ -25,12 +25,15 @@ export async function POST(req: NextRequest) {
     const { name, sprite, stats } = regenmonData;
     const systemPrompt = generatePersonalityPrompt(name, sprite, stats);
 
-    // Call Claude
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+    // Call OpenAI
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
       max_tokens: 150,
-      system: systemPrompt,
       messages: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
         {
           role: "user",
           content: message,
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const replyText = response.content[0].type === "text" ? response.content[0].text : "";
+    const replyText = response.choices[0]?.message?.content || "";
 
     return NextResponse.json({
       response: replyText,
@@ -54,7 +57,7 @@ export async function POST(req: NextRequest) {
     // Handle quota/rate limit errors gracefully
     if (error.status === 429 || error.message?.includes("rate_limit")) {
       return NextResponse.json({
-        response: `😴 Zzz... ${regenmonData.name} está descansando. La API está temporalmente no disponible. ¡Intenta más tarde!`,
+        response: `😴 Zzz... tu Regenmon está descansando. La API está temporalmente no disponible. ¡Intenta más tarde!`,
         statsEffects: {
           happiness: 5,
           energy: -10,

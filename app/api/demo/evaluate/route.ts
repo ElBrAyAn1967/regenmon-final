@@ -1,18 +1,21 @@
 // ==============================================
-// EVALUATE API - Session 4 (Claude Vision)
+// EVALUATE API - Session 4 (OpenAI Vision)
 // ==============================================
-// Endpoint para evaluar imágenes de entrenamiento con Claude
+// Endpoint para evaluar imágenes de entrenamiento con OpenAI Vision
 
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || "",
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || "",
 });
 
 export async function POST(req: NextRequest) {
+  let category = "proyecto";
   try {
-    const { imageBase64, category } = await req.json();
+    const body = await req.json();
+    category = body.category || "proyecto";
+    const imageBase64 = body.imageBase64;
 
     if (!imageBase64 || !category) {
       return NextResponse.json(
@@ -24,35 +27,30 @@ export async function POST(req: NextRequest) {
     // Generate evaluation prompt based on category
     const evaluationPrompt = generateEvaluationPrompt(category);
 
-    // Remove data URL prefix if present
-    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
-
-    // Call Claude Vision
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
+    // Call OpenAI Vision (gpt-4o has vision capabilities)
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
       max_tokens: 300,
       messages: [
         {
           role: "user",
           content: [
             {
-              type: "image",
-              source: {
-                type: "base64",
-                media_type: "image/png",
-                data: base64Data,
-              },
-            },
-            {
               type: "text",
               text: evaluationPrompt,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: imageBase64, // OpenAI accepts data URLs directly
+              },
             },
           ],
         },
       ],
     });
 
-    const responseText = response.content[0].type === "text" ? response.content[0].text : "";
+    const responseText = response.choices[0]?.message?.content || "";
 
     // Parse score from response
     const score = extractScore(responseText);

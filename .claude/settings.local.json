@@ -28,7 +28,10 @@
       "Bash(git reset:*)",
       "Bash(git ls-tree:*)",
       "Bash(git fetch:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(npx tsc:*)",
+      "Bash(findstr:*)",
+      "Bash(Select-String -Pattern \"demo\")"
     ]
   }
 }

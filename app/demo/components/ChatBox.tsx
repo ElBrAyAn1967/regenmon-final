@@ -168,7 +168,7 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
           placeholder="Escribe un mensaje..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           disabled={isLoading}
           style={{ flex: 1, fontSize: "0.8rem" }}
         />

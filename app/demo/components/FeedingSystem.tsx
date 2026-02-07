@@ -82,7 +82,7 @@ export function FeedingSystem({ regenmon, onFeed }: FeedingSystemProps) {
 
       {/* Feed Button */}
       <Button
-        variant={canFeed ? "success" : "disabled"}
+        variant={canFeed ? "success" : "warning"}
         onClick={handleFeed}
         disabled={!canFeed || isFeeding}
         style={{ width: "100%" }}

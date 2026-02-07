@@ -24,11 +24,15 @@ import { FeedingSystem } from "./components/FeedingSystem";
 // Session 4 Components
 import { TrainingSystem } from "./components/TrainingSystem";
 
+// Session 5 Components
+import { RegisterHub } from "./components/RegisterHub";
+
 export default function DemoPage() {
   const {
     regenmon,
     isLoading,
     createRegenmon,
+    saveRegenmon,
     resetRegenmon,
     applyStatsEffects,
     feedRegenmon,
@@ -72,7 +76,7 @@ export default function DemoPage() {
             </div>
             <div className="nes-container is-rounded">
               <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>💬 Sesión 2</h3>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Habla con IA (Gemini)</p>
+              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Habla con IA</p>
             </div>
             <div className="nes-container is-rounded">
               <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>🍎 Sesión 3</h3>
@@ -171,19 +175,13 @@ export default function DemoPage() {
 
         {activeTab === "social" && (
           <div style={{ display: "grid", gap: "2rem" }}>
-            {/* Session 5: Register Hub - Placeholder */}
-            <div className="nes-container is-rounded" style={{ maxWidth: "700px", margin: "0 auto", textAlign: "center", padding: "3rem" }}>
-              <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>🌍 Regenmon HUB</h3>
-              <p style={{ fontSize: "0.9rem", color: "#aaa", marginBottom: "2rem" }}>
-                Próximamente: Registra tu Regenmon en el HUB social global
-              </p>
-              <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🌐</div>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>
-                • Aparece en el leaderboard global<br />
-                • Comparte tu perfil público<br />
-                • Conecta con otros estudiantes
-              </p>
-            </div>
+            {/* Session 5: Register Hub */}
+            <RegisterHub
+              regenmon={regenmon}
+              onRegister={(appUrl) => {
+                saveRegenmon({ ...regenmon, isRegistered: true, appUrl });
+              }}
+            />
           </div>
         )}
       </div>

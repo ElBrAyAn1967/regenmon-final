@@ -62,53 +62,54 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
     setIsEvaluating(true);
 
     try {
-      // Convert image to base64
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = e.target?.result as string;
+      // Convert image to base64 using Promise
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target?.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(selectedFile);
+      });
 
-        const res = await fetch("/api/demo/evaluate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            imageBase64: base64,
-            category: selectedCategory,
-          }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok && !data.fallbackScore) {
-          throw new Error(data.error || "Error al evaluar");
-        }
-
-        // Handle fallback score
-        const finalScore = data.fallbackScore || data.score;
-        const finalFeedback = data.fallbackFeedback || data.feedback;
-        const finalPoints = data.points;
-        const finalTokens = data.tokens;
-
-        setResult({
-          score: finalScore,
-          feedback: finalFeedback,
-          points: finalPoints,
-          tokens: finalTokens,
-          isFallback: !!data.fallbackScore,
-        });
-
-        // Update regenmon stats
-        onTrainingComplete({
-          score: finalScore,
-          points: finalPoints,
-          tokens: finalTokens,
+      const res = await fetch("/api/demo/evaluate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageBase64: base64,
           category: selectedCategory,
-        });
-      };
+        }),
+      });
 
-      reader.readAsDataURL(selectedFile);
+      const data = await res.json();
+
+      if (!res.ok && !data.fallbackScore) {
+        throw new Error(data.error || "Error al evaluar");
+      }
+
+      // Handle fallback score
+      const finalScore = data.fallbackScore || data.score;
+      const finalFeedback = data.fallbackFeedback || data.feedback;
+      const finalPoints = data.points;
+      const finalTokens = data.tokens;
+
+      setResult({
+        score: finalScore,
+        feedback: finalFeedback,
+        points: finalPoints,
+        tokens: finalTokens,
+        isFallback: !!data.fallbackScore,
+      });
+
+      // Update regenmon stats
+      onTrainingComplete({
+        score: finalScore,
+        points: finalPoints,
+        tokens: finalTokens,
+        category: selectedCategory,
+      });
     } catch (error: any) {
       console.error("Evaluation error:", error);
       alert(`Error: ${error.message}`);
+    } finally {
       setIsEvaluating(false);
     }
   };
@@ -336,7 +337,7 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
       {/* Loading State */}
       {isEvaluating && (
         <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p style={{ fontSize: "1rem", marginBottom: "1rem" }}>🤖 Gemini AI evaluando...</p>
+          <p style={{ fontSize: "1rem", marginBottom: "1rem" }}>🤖 IA evaluando...</p>
           <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Esto puede tomar unos segundos</p>
         </div>
       )}
