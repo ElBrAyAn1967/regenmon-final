@@ -81,4 +81,4 @@ export async function GET(
 }
 
 // Configuración de cache
-export const revalidate = 60; // Revalidar cada 60 segundos
+export const dynamic = "force-dynamic";

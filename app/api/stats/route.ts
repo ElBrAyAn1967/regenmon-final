@@ -97,4 +97,4 @@ export async function GET(req: NextRequest) {
 }
 
 // Configuración de cache
-export const revalidate = 300; // Revalidar cada 5 minutos
+export const dynamic = "force-dynamic";
