@@ -27,9 +27,10 @@ export function TokenDisplay({ balance }: TokenDisplayProps) {
       onClick={() => setVisible(false)}
       style={{
         position: "fixed",
-        top: "4rem",
-        right: "1rem",
+        top: "3.5rem",
+        right: "0.5rem",
         zIndex: 200,
+        maxWidth: "calc(100vw - 1rem)",
         padding: "0.6rem 1rem",
         backgroundColor: "var(--bg-card-light)",
         border: "2px solid var(--orange)",

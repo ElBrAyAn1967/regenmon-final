@@ -80,7 +80,7 @@ export function RegenmonDisplay({ regenmon, onFeed, showChat, onToggleChat, acti
                   top: "100%",
                   right: 0,
                   marginTop: "0.3rem",
-                  padding: "0.6rem 0.8rem",
+                  padding: "0.5rem 0.6rem",
                   backgroundColor: "var(--bg-card-light)",
                   border: "2px solid var(--border-color)",
                   borderRadius: "4px",
@@ -88,8 +88,7 @@ export function RegenmonDisplay({ regenmon, onFeed, showChat, onToggleChat, acti
                   boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
                   animation: "fadeIn 0.2s ease-out",
                   display: "flex",
-                  gap: "1.2rem",
-                  whiteSpace: "nowrap",
+                  gap: "0.8rem",
                 }}
               >
                 <div style={{ textAlign: "center" }}>
@@ -112,7 +111,7 @@ export function RegenmonDisplay({ regenmon, onFeed, showChat, onToggleChat, acti
           {/* Sprite Display */}
           <div
             style={{
-              padding: "1.5rem 1rem",
+              padding: "1rem 0.75rem",
               background: isDead
                 ? "linear-gradient(135deg, #1a1a2e, #2d2d44)"
                 : "linear-gradient(135deg, var(--orange-dark), var(--orange))",
@@ -135,8 +134,9 @@ export function RegenmonDisplay({ regenmon, onFeed, showChat, onToggleChat, acti
             }}
           >
             <div
+              className="regenmon-sprite"
               style={{
-                fontSize: "4.5rem",
+                fontSize: "3.5rem",
                 filter: isDead
                   ? "grayscale(1) brightness(0.5)"
                   : "drop-shadow(2px 2px 0px rgba(0,0,0,0.3))",

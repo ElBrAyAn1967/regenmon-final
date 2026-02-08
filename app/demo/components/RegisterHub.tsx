@@ -92,7 +92,7 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
   };
 
   return (
-    <Card style={{ maxWidth: "700px", margin: "0 auto" }}>
+    <Card style={{ maxWidth: "100%", margin: "0 auto" }}>
       <h3 style={{ marginBottom: "1rem", fontSize: "0.85rem", textAlign: "center", color: "var(--orange)" }}>
         Registrar en el HUB
       </h3>
@@ -102,7 +102,7 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
         className="nes-container is-dark is-centered"
         style={{ marginBottom: "1.5rem", padding: "1.5rem" }}
       >
-        <div style={{ fontSize: "4rem", marginBottom: "0.5rem" }}>{regenmon.sprite}</div>
+        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>{regenmon.sprite}</div>
         <h4 style={{ fontSize: "0.75rem", color: "var(--yellow)", marginBottom: "0.25rem" }}>
           {regenmon.name}
         </h4>
@@ -183,10 +183,10 @@ function SuccessView({
   registeredId: string | null;
 }) {
   return (
-    <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "100%", margin: "0 auto" }}>
       {/* Success Badge */}
-      <Card style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎉</div>
+      <Card style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+        <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>🎉</div>
         <h3 style={{ fontSize: "0.9rem", color: "var(--orange)", marginBottom: "0.5rem" }}>
           Registrado en el HUB!
         </h3>
@@ -207,7 +207,7 @@ function SuccessView({
           className="nes-container is-dark is-centered"
           style={{ padding: "1.5rem", marginBottom: "1rem" }}
         >
-          <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{regenmon.sprite}</div>
+          <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{regenmon.sprite}</div>
           <h4 style={{ fontSize: "0.75rem", color: "var(--yellow)" }}>{regenmon.name}</h4>
           <p style={{ fontSize: "0.5rem", color: "var(--fg-muted)" }}>
             Stage {regenmon.stage}/3 | {regenmon.totalPoints} pts | {regenmon.balance} tokens
@@ -219,7 +219,7 @@ function SuccessView({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
           gap: "1rem",
         }}
       >

@@ -80,12 +80,13 @@ export default function DemoPage() {
     <>
       <Navbar />
 
-      <div style={{ maxWidth: showSidePanel ? "1100px" : "900px", margin: "0 auto", padding: "0.5rem 1rem", minHeight: "calc(100vh - 12rem)", transition: "max-width 0.4s ease" }}>
+      <div className="demo-layout" style={{ maxWidth: showSidePanel ? "1100px" : "900px", margin: "0 auto", padding: "0.5rem 0.75rem", minHeight: "calc(100vh - 12rem)", transition: "max-width 0.4s ease" }}>
         {/* Regenmon Display + Side Panel */}
         <div
+          className="demo-flex"
           style={{
             display: "flex",
-            gap: "1.5rem",
+            gap: "1rem",
             justifyContent: "center",
             alignItems: "flex-start",
             transition: "all 0.4s ease",
@@ -108,7 +109,7 @@ export default function DemoPage() {
 
           {/* Side panel - Chat, Training, or Social */}
           {showSidePanel && (
-            <div style={{ flex: "1", minWidth: 0, animation: "fadeIn 0.4s ease-out" }}>
+            <div className="demo-side-panel" style={{ flex: "1", minWidth: 0, animation: "fadeIn 0.4s ease-out" }}>
               {activeTab === "play" && showChat && (
                 <ChatBox regenmon={regenmon} onStatsUpdate={applyStatsEffects} />
               )}
@@ -135,6 +136,23 @@ export default function DemoPage() {
       </div>
 
       <Footer />
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .demo-layout {
+            max-width: 100% !important;
+            padding: 0.5rem !important;
+          }
+          .demo-flex {
+            flex-direction: column !important;
+            max-width: 100% !important;
+            gap: 0.75rem !important;
+          }
+          .demo-side-panel {
+            width: 100% !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

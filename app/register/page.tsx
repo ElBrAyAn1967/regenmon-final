@@ -77,7 +77,7 @@ export default function RegisterPage() {
     <>
       <Navbar />
       <div className="container" style={{ minHeight: "calc(100vh - 12rem)" }}>
-        <h1 style={{ fontSize: "2.2rem", textAlign: "center", marginBottom: "2rem", color: "var(--orange)" }}>
+        <h1 style={{ fontSize: "1.3rem", textAlign: "center", marginBottom: "1.5rem", color: "var(--orange)" }}>
           📝 Register Regenmon
         </h1>
 

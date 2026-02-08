@@ -105,10 +105,10 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
         ref={messagesContainerRef}
         className="nes-container is-dark"
         style={{
-          height: "300px",
+          height: "250px",
           overflowY: "auto",
-          marginBottom: "1rem",
-          padding: "1rem",
+          marginBottom: "0.75rem",
+          padding: "0.75rem",
         }}
       >
         {messages.length === 0 && (
@@ -135,7 +135,7 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
               className={`nes-balloon ${msg.role === "user" ? "from-right" : "from-left"}`}
               style={{
                 display: "inline-block",
-                maxWidth: "80%",
+                maxWidth: "90%",
                 fontSize: "0.6rem",
                 backgroundColor: msg.role === "user" ? "rgba(59, 130, 246, 0.15)" : "rgba(245, 158, 11, 0.15)",
               }}

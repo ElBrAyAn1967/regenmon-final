@@ -65,7 +65,7 @@ export function FeedingSystem({ regenmon, onFeed }: FeedingSystemProps) {
               border: "2px solid var(--border-color)",
               borderRadius: "4px",
               fontSize: "0.55rem",
-              whiteSpace: "nowrap",
+              minWidth: "160px",
               zIndex: 50,
               boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
               animation: "fadeIn 0.2s ease-out",

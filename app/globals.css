@@ -316,3 +316,48 @@ body {
 *::-webkit-scrollbar {
   display: none;
 }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    padding: 1rem 0.5rem;
+  }
+
+  .nes-btn {
+    font-size: 0.55rem !important;
+    padding: 0.3rem 0.5rem !important;
+  }
+
+  .nes-input {
+    font-size: 0.55rem !important;
+  }
+
+  .demo-title {
+    font-size: 0.85rem;
+  }
+
+  .demo-section-title {
+    font-size: 0.65rem;
+  }
+
+  .demo-tab {
+    font-size: 0.5rem !important;
+    padding: 0.25rem 0.45rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem 0.35rem;
+  }
+
+  .nes-btn {
+    font-size: 0.5rem !important;
+    padding: 0.25rem 0.4rem !important;
+  }
+
+  .demo-title {
+    font-size: 0.75rem;
+  }
+}

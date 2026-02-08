@@ -139,7 +139,7 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
   };
 
   return (
-    <Card style={{ maxWidth: "700px", margin: "0 auto" }}>
+    <Card style={{ maxWidth: "100%", margin: "0 auto" }}>
       <h3 style={{ marginBottom: "0.75rem", fontSize: "0.85rem", color: "var(--orange)" }}>Entrenamiento</h3>
 
       {/* Category Selection */}
@@ -148,15 +148,15 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
           <label style={{ fontSize: "0.6rem", marginBottom: "0.5rem", display: "block", color: "var(--fg-muted)" }}>
             Categoria:
           </label>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "0.75rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0.5rem" }}>
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.value}
                 className={`nes-btn ${selectedCategory === cat.value ? "is-primary" : ""}`}
                 onClick={() => setSelectedCategory(cat.value)}
                 style={{
-                  fontSize: "0.7rem",
-                  padding: "0.5rem",
+                  fontSize: "0.6rem",
+                  padding: "0.4rem",
                   transition: "transform 0.2s",
                 }}
                 onMouseEnter={(e) => {
@@ -258,10 +258,10 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
               backgroundColor: result.score >= 70 ? "rgba(245, 158, 11, 0.15)" : result.score >= 40 ? "rgba(251, 191, 36, 0.15)" : "rgba(239, 68, 68, 0.15)",
             }}
           >
-            <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>
+            <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>
               {result.score >= 80 ? "🏆" : result.score >= 60 ? "⭐" : result.score >= 40 ? "👍" : "💪"}
             </div>
-            <h2 style={{ fontSize: "1.8rem", color: "var(--yellow)", marginBottom: "0.5rem" }}>
+            <h2 style={{ fontSize: "1.4rem", color: "var(--yellow)", marginBottom: "0.5rem" }}>
               {result.score}/100
             </h2>
             <p style={{ fontSize: "0.6rem", color: "var(--fg-muted)" }}>
