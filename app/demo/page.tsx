@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { useDemoState } from "./hooks/useDemoState";
@@ -19,7 +19,6 @@ import { ChatBox } from "./components/ChatBox";
 
 // Session 3 Components
 import { TokenDisplay } from "./components/TokenDisplay";
-import { FeedingSystem } from "./components/FeedingSystem";
 
 // Session 4 Components
 import { TrainingSystem } from "./components/TrainingSystem";
@@ -34,63 +33,42 @@ export default function DemoPage() {
     createRegenmon,
     saveRegenmon,
     resetRegenmon,
+    reviveRegenmon,
     applyStatsEffects,
     feedRegenmon,
     addTraining,
   } = useDemoState();
 
   const [activeTab, setActiveTab] = useState<"play" | "train" | "social">("play");
+  const [showChat, setShowChat] = useState(false);
+
+  // Side panel visible for train/social always, for play only when chat is open (never when dead)
+  const showSidePanel = !regenmon?.isDead && (activeTab === "train" || activeTab === "social" || (activeTab === "play" && showChat));
+
+  const toggleChat = useCallback(() => {
+    const scrollY = window.scrollY;
+    setShowChat(prev => !prev);
+    // Prevent browser from auto-scrolling on layout change
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+    });
+  }, []);
 
   if (isLoading) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ fontSize: "1rem" }}>⏳ Cargando DEMO...</p>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg-primary)" }}>
+        <p style={{ fontSize: "0.7rem", color: "var(--orange)" }}>Cargando DEMO...</p>
       </div>
     );
   }
 
-  // Show creation if no Regenmon exists
+  // Show creation form directly if no Regenmon exists
   if (!regenmon) {
     return (
       <>
         <Navbar />
         <div className="container" style={{ minHeight: "calc(100vh - 12rem)", paddingTop: "2rem" }}>
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <h1 style={{ fontSize: "2rem", color: "#92cc41", marginBottom: "1rem" }}>
-              👾 Regenmon DEMO
-            </h1>
-            <p style={{ fontSize: "0.9rem", color: "#aaa", maxWidth: "600px", margin: "0 auto", lineHeight: "1.6" }}>
-              Experimenta todas las sesiones del bootcamp en un solo lugar.
-              <br />
-              Crea tu Regenmon, entrena, evoluciona y conecta con el HUB social.
-            </p>
-          </div>
-
           <CreateRegenmon onCreateRegenmon={createRegenmon} />
-
-          {/* Info Cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "2rem", maxWidth: "1000px", margin: "3rem auto" }}>
-            <div className="nes-container is-rounded">
-              <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>📚 Sesión 1</h3>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Crea y cuida tu Regenmon</p>
-            </div>
-            <div className="nes-container is-rounded">
-              <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>💬 Sesión 2</h3>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Habla con IA</p>
-            </div>
-            <div className="nes-container is-rounded">
-              <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>🍎 Sesión 3</h3>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Tokens $FRUTA</p>
-            </div>
-            <div className="nes-container is-rounded">
-              <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>🎓 Sesión 4</h3>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Entrena y evoluciona</p>
-            </div>
-            <div className="nes-container is-rounded">
-              <h3 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>🌍 Sesión 5</h3>
-              <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Conecta con el HUB</p>
-            </div>
-          </div>
         </div>
         <Footer />
       </>
@@ -102,88 +80,58 @@ export default function DemoPage() {
     <>
       <Navbar />
 
-      <div className="container" style={{ minHeight: "calc(100vh - 12rem)", paddingTop: "2rem" }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <h1 style={{ fontSize: "2rem", color: "#92cc41", marginBottom: "0.5rem" }}>
-            👾 Regenmon DEMO
-          </h1>
-          <p style={{ fontSize: "0.8rem", color: "#aaa", marginBottom: "1rem" }}>
-            Experimenta las 5 sesiones del bootcamp
-          </p>
-          <button
-            className="nes-btn is-error"
-            onClick={() => {
-              if (confirm("¿Resetear tu Regenmon? Esto borrará todo el progreso.")) {
-                resetRegenmon();
-              }
-            }}
-            style={{ fontSize: "0.7rem" }}
-          >
-            🔄 Reset
-          </button>
-        </div>
+      <div style={{ maxWidth: showSidePanel ? "1100px" : "900px", margin: "0 auto", padding: "0.5rem 1rem", minHeight: "calc(100vh - 12rem)", transition: "max-width 0.4s ease" }}>
+        {/* Regenmon Display + Side Panel */}
+        <div
+          style={{
+            display: "flex",
+            gap: "1.5rem",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            transition: "all 0.4s ease",
+            maxWidth: showSidePanel ? "1000px" : "450px",
+            margin: "0 auto",
+          }}
+        >
+          <div style={{ flex: "1", minWidth: 0, transition: "all 0.4s ease" }}>
+            <RegenmonDisplay
+              regenmon={regenmon}
+              onFeed={feedRegenmon}
+              showChat={showChat}
+              onToggleChat={toggleChat}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              onReset={resetRegenmon}
+              onRevive={reviveRegenmon}
+            />
+          </div>
 
-        {/* Tabs */}
-        <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <button
-            className={`nes-btn ${activeTab === "play" ? "is-primary" : ""}`}
-            onClick={() => setActiveTab("play")}
-          >
-            🎮 Jugar
-          </button>
-          <button
-            className={`nes-btn ${activeTab === "train" ? "is-primary" : ""}`}
-            onClick={() => setActiveTab("train")}
-          >
-            🎓 Entrenar
-          </button>
-          <button
-            className={`nes-btn ${activeTab === "social" ? "is-primary" : ""}`}
-            onClick={() => setActiveTab("social")}
-          >
-            🌍 Social
-          </button>
-        </div>
-
-        {/* Content based on active tab */}
-        {activeTab === "play" && (
-          <div style={{ display: "grid", gap: "2rem" }}>
-            {/* Session 1: Display */}
-            <RegenmonDisplay regenmon={regenmon} />
-
-            {/* Session 3: Tokens & Feeding */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-              <TokenDisplay balance={regenmon.balance} />
-              <FeedingSystem regenmon={regenmon} onFeed={feedRegenmon} />
+          {/* Side panel - Chat, Training, or Social */}
+          {showSidePanel && (
+            <div style={{ flex: "1", minWidth: 0, animation: "fadeIn 0.4s ease-out" }}>
+              {activeTab === "play" && showChat && (
+                <ChatBox regenmon={regenmon} onStatsUpdate={applyStatsEffects} />
+              )}
+              {activeTab === "train" && (
+                <TrainingSystem
+                  regenmon={regenmon}
+                  onTrainingComplete={addTraining}
+                />
+              )}
+              {activeTab === "social" && (
+                <RegisterHub
+                  regenmon={regenmon}
+                  onRegister={(appUrl) => {
+                    saveRegenmon({ ...regenmon, isRegistered: true, appUrl });
+                  }}
+                />
+              )}
             </div>
+          )}
+        </div>
 
-            {/* Session 2: Chat */}
-            <ChatBox regenmon={regenmon} onStatsUpdate={applyStatsEffects} />
-          </div>
-        )}
-
-        {activeTab === "train" && (
-          <div style={{ display: "grid", gap: "2rem" }}>
-            {/* Session 4: Training */}
-            <TrainingSystem
-              regenmon={regenmon}
-              onTrainingComplete={addTraining}
-            />
-          </div>
-        )}
-
-        {activeTab === "social" && (
-          <div style={{ display: "grid", gap: "2rem" }}>
-            {/* Session 5: Register Hub */}
-            <RegisterHub
-              regenmon={regenmon}
-              onRegister={(appUrl) => {
-                saveRegenmon({ ...regenmon, isRegistered: true, appUrl });
-              }}
-            />
-          </div>
-        )}
+        {/* Token alert (auto-dismiss) */}
+        {activeTab === "play" && <TokenDisplay balance={regenmon.balance} />}
       </div>
 
       <Footer />

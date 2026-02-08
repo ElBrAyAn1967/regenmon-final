@@ -99,13 +99,13 @@ function generatePersonalityPrompt(
     personality += "Estás cansado y necesitas descansar. ";
   }
 
-  // Hunger
+  // Hunger (100=lleno/satisfecho, 0=hambriento)
   if (stats.hunger > 70) {
-    personality += "Tienes mucha hambre y piensas en comida. ";
+    personality += "Estás bien alimentado y satisfecho. ";
   } else if (stats.hunger > 40) {
     personality += "Tienes un poco de hambre. ";
   } else {
-    personality += "Estás satisfecho. ";
+    personality += "Tienes mucha hambre y piensas en comida. ";
   }
 
   return `Eres ${name}, un Regenmon ${sprite}. Tu personalidad actual: ${personality}

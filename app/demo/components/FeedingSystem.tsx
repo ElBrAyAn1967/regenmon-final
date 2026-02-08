@@ -1,13 +1,11 @@
 // ==============================================
 // FEEDING SYSTEM COMPONENT - Session 3
 // ==============================================
-// Sistema para gastar tokens y reducir hambre
+// Icono de engrane con info popup + botón alimentar integrado en RegenmonDisplay
 
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/app/components/ui/Button";
-import { Card } from "@/app/components/ui/Card";
 
 interface FeedingSystemProps {
   regenmon: any;
@@ -18,16 +16,14 @@ const FEED_COST = 10;
 
 export function FeedingSystem({ regenmon, onFeed }: FeedingSystemProps) {
   const [isFeeding, setIsFeeding] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const canFeed = regenmon.balance >= FEED_COST;
   const isSatisfied = regenmon.stats.hunger < 30;
 
   const handleFeed = () => {
     if (!canFeed || isFeeding) return;
-
     setIsFeeding(true);
-
-    // Animation delay
     setTimeout(() => {
       onFeed();
       setIsFeeding(false);
@@ -35,106 +31,69 @@ export function FeedingSystem({ regenmon, onFeed }: FeedingSystemProps) {
   };
 
   return (
-    <Card>
-      <h3 style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>🍎 Alimentar</h3>
-
-      {/* Info Box */}
-      <div
-        className="nes-container is-dark"
-        style={{
-          marginBottom: "1rem",
-          padding: "0.75rem",
-          fontSize: "0.7rem"
-        }}
-      >
-        <p style={{ marginBottom: "0.5rem" }}>
-          <strong>Costo:</strong> {FEED_COST} $FRUTA
-        </p>
-        <p style={{ marginBottom: "0.5rem" }}>
-          <strong>Efecto:</strong> -30 hambre, +5 felicidad
-        </p>
-        <p style={{ color: "#aaa" }}>
-          Tu balance: <span style={{ color: "#f7d51d" }}>{regenmon.balance}</span> tokens
-        </p>
-      </div>
-
-      {/* Hunger Status */}
-      <div style={{ marginBottom: "1rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.3rem" }}>
-          <span style={{ fontSize: "0.7rem" }}>🍎 Nivel de Hambre</span>
-          <span
-            style={{
-              fontSize: "0.7rem",
-              fontWeight: "bold",
-              color: regenmon.stats.hunger >= 70 ? "#e76e55" : regenmon.stats.hunger >= 40 ? "#f7d51d" : "#92cc41"
-            }}
-          >
-            {regenmon.stats.hunger}%
-          </span>
-        </div>
-        <progress
-          className="nes-progress is-warning"
-          value={regenmon.stats.hunger}
-          max="100"
-          style={{ width: "100%", height: "20px" }}
-        />
-      </div>
-
+    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "center" }}>
       {/* Feed Button */}
-      <Button
-        variant={canFeed ? "success" : "warning"}
+      <button
+        className={`nes-btn ${canFeed ? "is-success" : "is-warning"}`}
         onClick={handleFeed}
         disabled={!canFeed || isFeeding}
-        style={{ width: "100%" }}
+        style={{ fontSize: "0.55rem", padding: "0.3rem 0.6rem" }}
       >
-        {isFeeding ? "🍎 Alimentando..." : "🍎 Alimentar (-10 tokens)"}
-      </Button>
+        {isFeeding ? "🍎 ..." : "🍎 Alimentar (-10)"}
+      </button>
 
-      {/* Warnings/Success Messages */}
-      {!canFeed && (
-        <div
-          className="nes-container is-rounded"
-          style={{
-            marginTop: "1rem",
-            padding: "0.5rem",
-            backgroundColor: "#e76e5533",
-            fontSize: "0.7rem",
-            textAlign: "center"
-          }}
+      {/* Gear icon for info */}
+      <div style={{ position: "relative" }}>
+        <button
+          className="nes-btn"
+          onClick={() => setShowInfo(!showInfo)}
+          style={{ fontSize: "0.6rem", padding: "0.25rem 0.4rem", cursor: "pointer" }}
         >
-          <p>⚠️ No tienes suficientes tokens. ¡Entrena para ganar más!</p>
-        </div>
-      )}
+          ⚙️
+        </button>
 
-      {isSatisfied && (
-        <div
-          className="nes-container is-rounded"
-          style={{
-            marginTop: "1rem",
-            padding: "0.5rem",
-            backgroundColor: "#92cc4133",
-            fontSize: "0.7rem",
-            textAlign: "center"
-          }}
-        >
-          <p>✅ Tu Regenmon está satisfecho</p>
-        </div>
-      )}
-
-      {!isSatisfied && regenmon.stats.hunger >= 70 && (
-        <div
-          className="nes-container is-rounded"
-          style={{
-            marginTop: "1rem",
-            padding: "0.5rem",
-            backgroundColor: "#e76e5533",
-            fontSize: "0.7rem",
-            textAlign: "center"
-          }}
-        >
-          <p>🚨 ¡Tu Regenmon tiene mucha hambre!</p>
-        </div>
-      )}
-    </Card>
+        {/* Info popup */}
+        {showInfo && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "100%",
+              right: 0,
+              marginBottom: "0.5rem",
+              padding: "0.6rem",
+              backgroundColor: "var(--bg-card-light)",
+              border: "2px solid var(--border-color)",
+              borderRadius: "4px",
+              fontSize: "0.55rem",
+              whiteSpace: "nowrap",
+              zIndex: 50,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+              animation: "fadeIn 0.2s ease-out",
+            }}
+          >
+            <p style={{ marginBottom: "0.3rem" }}>
+              <strong>Costo:</strong> {FEED_COST} $FRUTA
+            </p>
+            <p style={{ marginBottom: "0.3rem" }}>
+              <strong>Efecto:</strong> -30 hambre, +5 felicidad
+            </p>
+            <p style={{ color: "var(--fg-muted)" }}>
+              Balance: <span style={{ color: "var(--yellow)" }}>{regenmon.balance}</span> tokens
+            </p>
+            <p style={{ marginTop: "0.3rem" }}>
+              Hambre: <span style={{
+                color: regenmon.stats.hunger >= 70 ? "var(--red)" : regenmon.stats.hunger >= 40 ? "var(--yellow)" : "var(--green)"
+              }}>{regenmon.stats.hunger}%</span>
+            </p>
+            {!canFeed && (
+              <p style={{ color: "var(--red)", marginTop: "0.3rem" }}>Sin tokens suficientes</p>
+            )}
+            {isSatisfied && (
+              <p style={{ color: "var(--green)", marginTop: "0.3rem" }}>Regenmon satisfecho</p>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

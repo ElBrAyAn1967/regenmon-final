@@ -31,7 +31,7 @@ export default function LeaderboardPage() {
       <>
         <Navbar />
         <div className="container" style={{ minHeight: "calc(100vh - 12rem)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <p style={{ color: "#ce372b" }}>⚠️ Error loading leaderboard</p>
+          <p style={{ color: "var(--red)" }}>⚠️ Error loading leaderboard</p>
         </div>
         <Footer />
       </>
@@ -42,7 +42,7 @@ export default function LeaderboardPage() {
     <>
       <Navbar />
       <div className="container" style={{ minHeight: "calc(100vh - 12rem)" }}>
-        <h1 style={{ fontSize: "2rem", textAlign: "center", marginBottom: "2rem", color: "#f7d51d" }}>
+        <h1 style={{ fontSize: "2.5rem", textAlign: "center", marginBottom: "2rem", color: "var(--orange)" }}>
           🏆 Leaderboard
         </h1>
 
@@ -82,12 +82,12 @@ export default function LeaderboardPage() {
                         />
                         <div>
                           <h3 style={{ fontSize: "1.2rem", marginBottom: "0.3rem" }}>{regenmon.name}</h3>
-                          <p style={{ fontSize: "0.7rem", color: "#92cc41" }}>by {regenmon.ownerName} • Stage {regenmon.stage}</p>
+                          <p style={{ fontSize: "0.7rem", color: "var(--orange)" }}>by {regenmon.ownerName} • Stage {regenmon.stage}</p>
                         </div>
                       </div>
                       <div style={{ display: "flex", gap: "2rem", fontSize: "0.8rem", marginTop: "0.5rem" }}>
                         <span>⭐ {regenmon.totalPoints.toLocaleString()} pts</span>
-                        <span style={{ color: "#92cc41" }}>🍎 {regenmon.balance} $FRUTA</span>
+                        <span style={{ color: "var(--orange)" }}>🍎 {regenmon.balance} $FRUTA</span>
                       </div>
                     </div>
 

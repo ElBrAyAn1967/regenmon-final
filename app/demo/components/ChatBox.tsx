@@ -19,19 +19,33 @@ interface ChatBoxProps {
   onStatsUpdate: (effects: { happiness: number; energy: number; hunger: number }) => void;
 }
 
+const CHAT_STORAGE_KEY = "demo-regenmon-chat";
+
 export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem(CHAT_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom when new message arrives
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // Save messages to localStorage whenever they change
   useEffect(() => {
-    scrollToBottom();
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+  }, [messages]);
+
+  // Scroll to bottom within chat container only (no page scroll)
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   }, [messages]);
 
   const handleSend = async () => {
@@ -61,8 +75,9 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
         { role: "assistant", content: data.response },
       ]);
 
-      // Update stats
-      onStatsUpdate(data.statsEffects);
+      // Chat costs energy and makes hungry, but increases happiness
+      // Like a real creature: socializing is fun but tiring
+      onStatsUpdate({ happiness: 3, energy: -3, hunger: -2 });
     } catch (error: any) {
       console.error("Chat error:", error);
       setMessages((prev) => [
@@ -82,26 +97,27 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
   };
 
   return (
-    <Card style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h3 style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>💬 Chat con {regenmon.name}</h3>
+    <Card style={{ margin: "0 auto" }}>
+      <h3 style={{ marginBottom: "0.75rem", fontSize: "0.85rem", color: "var(--orange)" }}>Chat con {regenmon.name}</h3>
 
       {/* Messages Container */}
       <div
+        ref={messagesContainerRef}
         className="nes-container is-dark"
         style={{
-          height: "350px",
+          height: "300px",
           overflowY: "auto",
           marginBottom: "1rem",
           padding: "1rem",
         }}
       >
         {messages.length === 0 && (
-          <div style={{ textAlign: "center", marginTop: "140px" }}>
-            <p style={{ fontSize: "0.8rem", color: "#aaa" }}>
-              ¡Habla con tu Regenmon!
+          <div style={{ textAlign: "center", marginTop: "120px" }}>
+            <p style={{ fontSize: "0.6rem", color: "var(--fg-muted)" }}>
+              Habla con tu Regenmon!
             </p>
-            <p style={{ fontSize: "0.7rem", color: "#555", marginTop: "0.5rem" }}>
-              Cada mensaje: +5 😊 Felicidad, -10 ⚡ Energía
+            <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)", marginTop: "0.5rem" }}>
+              Cada mensaje: +3 😊, -3 ⚡, -2 🍔
             </p>
           </div>
         )}
@@ -120,8 +136,8 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
               style={{
                 display: "inline-block",
                 maxWidth: "80%",
-                fontSize: "0.8rem",
-                backgroundColor: msg.role === "user" ? "#209cee33" : "#92cc4133",
+                fontSize: "0.6rem",
+                backgroundColor: msg.role === "user" ? "rgba(59, 130, 246, 0.15)" : "rgba(245, 158, 11, 0.15)",
               }}
             >
               <p>{msg.content}</p>
@@ -131,8 +147,8 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
 
         {isLoading && (
           <div style={{ textAlign: "left", marginBottom: "1rem" }}>
-            <div className="nes-balloon from-left" style={{ display: "inline-block", backgroundColor: "#92cc4133" }}>
-              <p style={{ fontSize: "0.8rem" }}>
+            <div className="nes-balloon from-left" style={{ display: "inline-block", backgroundColor: "rgba(245, 158, 11, 0.15)" }}>
+              <p style={{ fontSize: "0.6rem" }}>
                 {regenmon.sprite} escribiendo
                 <span style={{ animation: "blink 1.4s infinite" }}>...</span>
               </p>
@@ -140,7 +156,6 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
           </div>
         )}
 
-        <div ref={messagesEndRef} />
       </div>
 
       <style jsx>{`
@@ -170,7 +185,7 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyPress}
           disabled={isLoading}
-          style={{ flex: 1, fontSize: "0.8rem" }}
+          style={{ flex: 1, fontSize: "0.6rem" }}
         />
         <Button
           variant="primary"
@@ -188,8 +203,8 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
           style={{
             marginTop: "1rem",
             padding: "0.5rem",
-            backgroundColor: "#e76e5533",
-            fontSize: "0.7rem",
+            backgroundColor: "rgba(239, 68, 68, 0.15)",
+            fontSize: "0.55rem",
             textAlign: "center",
           }}
         >
@@ -198,7 +213,7 @@ export function ChatBox({ regenmon, onStatsUpdate }: ChatBoxProps) {
       )}
 
       {/* Info */}
-      <p style={{ fontSize: "0.7rem", color: "#aaa", marginTop: "0.5rem", textAlign: "center" }}>
+      <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)", marginTop: "0.5rem", textAlign: "center" }}>
         💡 La personalidad de {regenmon.name} cambia según sus stats
       </p>
     </Card>

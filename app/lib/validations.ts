@@ -21,7 +21,7 @@ export const TrainingHistoryItemSchema = z.object({
   score: z.number().min(0).max(100),
   category: z.string().optional(),
   date: z.string().datetime(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 });
 
 export const TrainingHistorySchema = z.array(TrainingHistoryItemSchema);

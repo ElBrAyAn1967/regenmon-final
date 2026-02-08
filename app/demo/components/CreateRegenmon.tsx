@@ -13,7 +13,7 @@ interface CreateRegenmonProps {
 }
 
 export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [name, setName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [sprite, setSprite] = useState("🦖");
@@ -87,14 +87,14 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
           onClick={() => setIsOpen(true)}
           className="nes-btn is-success"
           style={{
-            fontSize: "1.2rem",
-            padding: "1rem 2rem",
+            fontSize: "0.8rem",
+            padding: "0.75rem 1.5rem",
             transition: "transform 0.2s, box-shadow 0.2s",
             cursor: "pointer"
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-4px)";
-            e.currentTarget.style.boxShadow = "0 8px 0 #0f380f";
+            e.currentTarget.style.boxShadow = "0 8px 0 var(--orange-dark)";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
@@ -137,11 +137,11 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
           }
         }
       `}</style>
-      <h3 style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>🎮 Crea Tu Regenmon</h3>
+      <h3 style={{ marginBottom: "0.75rem", fontSize: "0.85rem", color: "var(--orange)" }}>Crea Tu Regenmon</h3>
       <form onSubmit={handleSubmit}>
         {/* Nombre del Regenmon */}
         <div className="nes-field" style={{ marginBottom: "1rem" }}>
-          <label htmlFor="name" style={{ fontSize: "0.8rem" }}>
+          <label htmlFor="name" style={{ fontSize: "0.6rem", color: "var(--fg-muted)" }}>
             Nombre del Regenmon:
           </label>
           <input
@@ -155,13 +155,13 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
           />
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.3rem" }}>
             {errors.name ? (
-              <span style={{ fontSize: "0.7rem", color: "#e76e55" }}>⚠️ {errors.name}</span>
+              <span style={{ fontSize: "0.55rem", color: "var(--red)" }}>{errors.name}</span>
             ) : (
-              <span style={{ fontSize: "0.7rem", color: "#aaa" }}>
+              <span style={{ fontSize: "0.55rem", color: "var(--fg-dim)" }}>
                 {MIN_NAME_LENGTH}-{MAX_NAME_LENGTH} caracteres
               </span>
             )}
-            <span style={{ fontSize: "0.7rem", color: name.length > MAX_NAME_LENGTH - 5 ? "#f7d51d" : "#aaa" }}>
+            <span style={{ fontSize: "0.55rem", color: name.length > MAX_NAME_LENGTH - 5 ? "var(--yellow)" : "var(--fg-dim)" }}>
               {name.length}/{MAX_NAME_LENGTH}
             </span>
           </div>
@@ -169,7 +169,7 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
 
         {/* Tu Nombre */}
         <div className="nes-field" style={{ marginBottom: "1rem" }}>
-          <label htmlFor="owner" style={{ fontSize: "0.8rem" }}>
+          <label htmlFor="owner" style={{ fontSize: "0.6rem", color: "var(--fg-muted)" }}>
             Tu Nombre:
           </label>
           <input
@@ -181,7 +181,7 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
             placeholder="ej. Brayan"
           />
           {errors.ownerName && (
-            <span style={{ fontSize: "0.7rem", color: "#e76e55", marginTop: "0.3rem", display: "block" }}>
+            <span style={{ fontSize: "0.55rem", color: "var(--red)", marginTop: "0.3rem", display: "block" }}>
               ⚠️ {errors.ownerName}
             </span>
           )}
@@ -189,7 +189,7 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
 
         {/* Selección de Tipo */}
         <div style={{ marginBottom: "1.5rem" }}>
-          <label style={{ fontSize: "0.8rem", marginBottom: "0.5rem", display: "block" }}>
+          <label style={{ fontSize: "0.6rem", marginBottom: "0.5rem", display: "block", color: "var(--fg-muted)" }}>
             Elige un Tipo:
           </label>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "0.5rem" }}>
@@ -208,12 +208,12 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
                   e.currentTarget.style.transform = sprite === s ? "scale(1.1)" : "scale(1)";
                 }}
                 style={{
-                  fontSize: "2.5rem",
+                  fontSize: "2rem",
                   padding: "1rem",
                   transition: "transform 0.2s ease, box-shadow 0.2s ease",
                   transform: sprite === s ? "scale(1.1)" : "scale(1)",
                   cursor: "pointer",
-                  boxShadow: sprite === s ? "0 4px 8px rgba(33, 156, 238, 0.3)" : "none",
+                  boxShadow: sprite === s ? "0 4px 8px var(--border-glow)" : "none",
                   animation: sprite === s ? "pulse 1.5s ease-in-out infinite" : "none"
                 }}
               >
@@ -221,7 +221,7 @@ export function CreateRegenmon({ onCreateRegenmon }: CreateRegenmonProps) {
               </button>
             ))}
           </div>
-          <p style={{ fontSize: "0.7rem", color: "#aaa", textAlign: "center", marginTop: "0.5rem" }}>
+          <p style={{ fontSize: "0.55rem", color: "var(--fg-dim)", textAlign: "center", marginTop: "0.5rem" }}>
             Tipo seleccionado: {sprite}
           </p>
         </div>

@@ -39,7 +39,7 @@ export function handleApiError(error: unknown): NextResponse {
     return NextResponse.json(
       {
         error: "Validation error",
-        details: error.errors.map((e) => ({
+        details: (error as any).errors.map((e: any) => ({
           field: e.path.join("."),
           message: e.message,
           code: e.code,

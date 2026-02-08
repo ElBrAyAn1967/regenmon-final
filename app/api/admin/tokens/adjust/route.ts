@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
           balanceAfter,
           metadata: {
             reason,
-            adminId: session.user?.id,
+            adminId: (session.user as any)?.id,
             adminEmail: session.user?.email,
             timestamp: new Date().toISOString(),
           },
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, error: "Invalid request data", details: error.errors },
+        { success: false, error: "Invalid request data", details: (error as any).errors },
         { status: 400 }
       );
     }

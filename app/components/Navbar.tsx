@@ -13,30 +13,47 @@ export function Navbar() {
   const { ready, authenticated, login, logout, user } = usePrivy();
 
   return (
-    <nav style={{ padding: "1rem", backgroundColor: "#209cee", marginBottom: "2rem" }}>
-      <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
-        <Link href="/" style={{ fontSize: "1.2rem", color: "#fff", textDecoration: "none" }}>
-          🎮 Regenmon Hub
+    <nav style={{
+      padding: "0.25rem 1rem",
+      backgroundColor: "var(--bg-card)",
+      borderBottom: "1px solid var(--border-color)",
+      position: "sticky",
+      top: 0,
+      zIndex: 100,
+    }}>
+      <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Link href="/" style={{ fontSize: "0.85rem", color: "var(--orange)", textDecoration: "none", fontWeight: "bold" }}>
+          Regenmon Hub
         </Link>
 
-        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", flexWrap: "wrap" }}>
-          <Link href="/" style={{ color: "#fff", textDecoration: "none" }}>Home</Link>
-          <Link href="/leaderboard" style={{ color: "#fff", textDecoration: "none" }}>Leaderboard</Link>
-          <Link href="/register" style={{ color: "#fff", textDecoration: "none" }}>Register</Link>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <Link href="/" style={{ color: "var(--fg-muted)", textDecoration: "none", fontSize: "0.65rem", transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "var(--fg-primary)"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--fg-muted)"}
+          >Home</Link>
+          <Link href="/leaderboard" style={{ color: "var(--fg-muted)", textDecoration: "none", fontSize: "0.65rem", transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "var(--fg-primary)"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--fg-muted)"}
+          >Leaderboard</Link>
+          <Link href="/register" style={{ color: "var(--fg-muted)", textDecoration: "none", fontSize: "0.65rem", transition: "color 0.2s" }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "var(--fg-primary)"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "var(--fg-muted)"}
+          >Register</Link>
+          <Link href="/demo" style={{ color: "var(--orange)", textDecoration: "none", fontSize: "0.65rem", fontWeight: "bold" }}>Demo</Link>
 
           {ready && (
             <>
               {authenticated ? (
-                <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.8rem", color: "#fff" }}>👋 {user?.email?.address?.split("@")[0] || "User"}</span>
-                  <Button variant="error" onClick={logout}>
+                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                  <span style={{ fontSize: "0.6rem", color: "var(--fg-dim)" }}>{user?.email?.address?.split("@")[0] || "User"}</span>
+                  <button className="nes-btn is-error" onClick={logout} style={{ fontSize: "0.55rem", padding: "0.15rem 0.5rem" }}>
                     Logout
-                  </Button>
+                  </button>
                 </div>
               ) : (
-                <Button variant="success" onClick={login}>
+                <button className="nes-btn is-primary" onClick={login} style={{ fontSize: "0.55rem", padding: "0.15rem 0.5rem" }}>
                   Login
-                </Button>
+                </button>
               )}
             </>
           )}

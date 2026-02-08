@@ -58,7 +58,7 @@ export default function RegenmonPage() {
             style={{ width: "128px", height: "128px", margin: "0 auto 1rem", imageRendering: "pixelated" }}
           />
           <h1 style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{regenmon.name}</h1>
-          <p style={{ fontSize: "0.8rem", color: "#92cc41" }}>
+          <p style={{ fontSize: "0.8rem", color: "var(--orange)" }}>
             by {regenmon.ownerName} • Stage {regenmon.stage}
           </p>
           {!regenmon.isActive && (
@@ -73,7 +73,7 @@ export default function RegenmonPage() {
           <Card centered>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "3rem" }}>⭐</div>
-              <div style={{ fontSize: "1.8rem", color: "#f7d51d", margin: "0.5rem 0" }}>
+              <div style={{ fontSize: "1.8rem", color: "var(--yellow)", margin: "0.5rem 0" }}>
                 {regenmon.totalPoints}
               </div>
               <div style={{ fontSize: "0.7rem" }}>Total Points</div>
@@ -83,7 +83,7 @@ export default function RegenmonPage() {
           <Card centered>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "3rem" }}>🍎</div>
-              <div style={{ fontSize: "1.8rem", color: "#92cc41", margin: "0.5rem 0" }}>
+              <div style={{ fontSize: "1.8rem", color: "var(--orange)", margin: "0.5rem 0" }}>
                 {regenmon.balance}
               </div>
               <div style={{ fontSize: "0.7rem" }}>$FRUTA</div>
@@ -93,7 +93,7 @@ export default function RegenmonPage() {
           <Card centered>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "3rem" }}>👁️</div>
-              <div style={{ fontSize: "1.8rem", color: "#209cee", margin: "0.5rem 0" }}>
+              <div style={{ fontSize: "1.8rem", color: "var(--blue)", margin: "0.5rem 0" }}>
                 {regenmon.totalVisits}
               </div>
               <div style={{ fontSize: "0.7rem" }}>Visits</div>
@@ -144,7 +144,7 @@ export default function RegenmonPage() {
               🎮 Visit Student App →
             </Button>
           </a>
-          <p style={{ fontSize: "0.7rem", marginTop: "1.5rem", color: "#92cc41" }}>
+          <p style={{ fontSize: "0.7rem", marginTop: "1.5rem", color: "var(--orange)" }}>
             Last sync: {new Date(regenmon.lastSynced).toLocaleDateString()}
           </p>
         </div>

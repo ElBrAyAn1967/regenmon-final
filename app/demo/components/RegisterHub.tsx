@@ -93,8 +93,8 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
 
   return (
     <Card style={{ maxWidth: "700px", margin: "0 auto" }}>
-      <h3 style={{ marginBottom: "1.5rem", fontSize: "1.3rem", textAlign: "center" }}>
-        🌍 Registrar en el HUB
+      <h3 style={{ marginBottom: "1rem", fontSize: "0.85rem", textAlign: "center", color: "var(--orange)" }}>
+        Registrar en el HUB
       </h3>
 
       {/* Regenmon Preview */}
@@ -103,18 +103,18 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
         style={{ marginBottom: "1.5rem", padding: "1.5rem" }}
       >
         <div style={{ fontSize: "4rem", marginBottom: "0.5rem" }}>{regenmon.sprite}</div>
-        <h4 style={{ fontSize: "1rem", color: "#f7d51d", marginBottom: "0.25rem" }}>
+        <h4 style={{ fontSize: "0.75rem", color: "var(--yellow)", marginBottom: "0.25rem" }}>
           {regenmon.name}
         </h4>
-        <p style={{ fontSize: "0.7rem", color: "#aaa" }}>
+        <p style={{ fontSize: "0.5rem", color: "var(--fg-muted)" }}>
           Owner: {regenmon.ownerName} | Stage {regenmon.stage}/3 | {regenmon.totalPoints} pts
         </p>
       </div>
 
       {/* Registration Form */}
       <div style={{ marginBottom: "1.5rem" }}>
-        <label style={{ fontSize: "0.8rem", marginBottom: "0.5rem", display: "block" }}>
-          📧 Email (opcional):
+        <label style={{ fontSize: "0.6rem", marginBottom: "0.5rem", display: "block", color: "var(--fg-muted)" }}>
+          Email (opcional):
         </label>
         <input
           type="email"
@@ -122,9 +122,9 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="tu@email.com"
-          style={{ fontSize: "0.8rem", marginBottom: "0.5rem" }}
+          style={{ fontSize: "0.6rem", marginBottom: "0.5rem" }}
         />
-        <p style={{ fontSize: "0.6rem", color: "#aaa" }}>
+        <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)" }}>
           Para recibir notificaciones del HUB (opcional)
         </p>
       </div>
@@ -132,10 +132,10 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
       {/* Info */}
       <div
         className="nes-container is-rounded"
-        style={{ marginBottom: "1.5rem", padding: "1rem", backgroundColor: "#209cee22" }}
+        style={{ marginBottom: "1.5rem", padding: "1rem", backgroundColor: "rgba(59, 130, 246, 0.1)" }}
       >
-        <h4 style={{ fontSize: "0.8rem", marginBottom: "0.5rem" }}>📋 Al registrarte:</h4>
-        <ul style={{ fontSize: "0.7rem", color: "#aaa", listStyle: "none", padding: 0 }}>
+        <h4 style={{ fontSize: "0.65rem", marginBottom: "0.5rem", color: "var(--orange)" }}>Al registrarte:</h4>
+        <ul style={{ fontSize: "0.55rem", color: "var(--fg-muted)", listStyle: "none", padding: 0 }}>
           <li style={{ marginBottom: "0.25rem" }}>✅ Tu Regenmon aparece en el Leaderboard</li>
           <li style={{ marginBottom: "0.25rem" }}>✅ Obtienes un perfil público</li>
           <li style={{ marginBottom: "0.25rem" }}>✅ Conectas con otros estudiantes</li>
@@ -149,9 +149,9 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
           style={{
             marginBottom: "1rem",
             padding: "0.75rem",
-            backgroundColor: "#e76e5533",
-            fontSize: "0.8rem",
-            color: "#e76e55",
+            backgroundColor: "rgba(239, 68, 68, 0.15)",
+            fontSize: "0.6rem",
+            color: "var(--red)",
           }}
         >
           ❌ {error}
@@ -164,9 +164,9 @@ export function RegisterHub({ regenmon, onRegister }: RegisterHubProps) {
         onClick={handleRegister}
         disabled={isRegistering}
         isLoading={isRegistering}
-        style={{ width: "100%", fontSize: "1rem" }}
+        style={{ width: "100%", fontSize: "0.7rem" }}
       >
-        🌍 Registrar en el HUB
+        Registrar en el HUB
       </Button>
     </Card>
   );
@@ -187,10 +187,10 @@ function SuccessView({
       {/* Success Badge */}
       <Card style={{ textAlign: "center", marginBottom: "2rem" }}>
         <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎉</div>
-        <h3 style={{ fontSize: "1.5rem", color: "#92cc41", marginBottom: "0.5rem" }}>
-          ¡Registrado en el HUB!
+        <h3 style={{ fontSize: "0.9rem", color: "var(--orange)", marginBottom: "0.5rem" }}>
+          Registrado en el HUB!
         </h3>
-        <p style={{ fontSize: "0.8rem", color: "#aaa", marginBottom: "1rem" }}>
+        <p style={{ fontSize: "0.6rem", color: "var(--fg-muted)", marginBottom: "1rem" }}>
           {regenmon.name} ahora es parte de la comunidad global
         </p>
 
@@ -208,8 +208,8 @@ function SuccessView({
           style={{ padding: "1.5rem", marginBottom: "1rem" }}
         >
           <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>{regenmon.sprite}</div>
-          <h4 style={{ fontSize: "1rem", color: "#f7d51d" }}>{regenmon.name}</h4>
-          <p style={{ fontSize: "0.7rem", color: "#aaa" }}>
+          <h4 style={{ fontSize: "0.75rem", color: "var(--yellow)" }}>{regenmon.name}</h4>
+          <p style={{ fontSize: "0.5rem", color: "var(--fg-muted)" }}>
             Stage {regenmon.stage}/3 | {regenmon.totalPoints} pts | {regenmon.balance} tokens
           </p>
         </div>
@@ -243,8 +243,8 @@ function SuccessView({
               onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
             >
               <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>👤</div>
-              <h4 style={{ fontSize: "0.9rem", marginBottom: "0.25rem" }}>Mi Perfil</h4>
-              <p style={{ fontSize: "0.6rem", color: "#aaa" }}>Ver perfil público</p>
+              <h4 style={{ fontSize: "0.65rem", marginBottom: "0.25rem" }}>Mi Perfil</h4>
+              <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)" }}>Ver perfil público</p>
             </div>
           </a>
         )}
@@ -268,8 +268,8 @@ function SuccessView({
             onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
           >
             <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🏆</div>
-            <h4 style={{ fontSize: "0.9rem", marginBottom: "0.25rem" }}>Leaderboard</h4>
-            <p style={{ fontSize: "0.6rem", color: "#aaa" }}>Ranking global</p>
+            <h4 style={{ fontSize: "0.65rem", marginBottom: "0.25rem" }}>Leaderboard</h4>
+            <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)" }}>Ranking global</p>
           </div>
         </a>
 
@@ -292,8 +292,8 @@ function SuccessView({
             onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
           >
             <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🔍</div>
-            <h4 style={{ fontSize: "0.9rem", marginBottom: "0.25rem" }}>Explorar</h4>
-            <p style={{ fontSize: "0.6rem", color: "#aaa" }}>Ver otros Regenmon</p>
+            <h4 style={{ fontSize: "0.65rem", marginBottom: "0.25rem" }}>Explorar</h4>
+            <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)" }}>Ver otros Regenmon</p>
           </div>
         </a>
       </div>

@@ -169,7 +169,8 @@ export default function AdminDashboardPage() {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  label={(entry) => entry.type}
+                  label={(entry: any) => entry.type}
+                  // @ts-expect-error recharts labelStyle typing issue
                   labelStyle={{ fontSize: "0.6rem" }}
                 >
                   {stats.transactionsByType.map((entry, index) => (

@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.95.2",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
+    "dayjs": "^1.11.19",
     "next": "16.1.6",
     "next-auth": "^4.24.13",
     "openai": "^6.18.0",

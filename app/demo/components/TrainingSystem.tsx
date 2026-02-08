@@ -91,12 +91,26 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
       const finalPoints = data.points;
       const finalTokens = data.tokens;
 
+      // Calculate stat effects based on score (mirrors useDemoState logic)
+      // hunger = saciedad (negative = gets hungry from training)
+      let statEffects: { happiness: number; energy: number; hunger: number };
+      if (finalScore >= 80) {
+        statEffects = { happiness: 15, energy: -20, hunger: -15 };
+      } else if (finalScore >= 60) {
+        statEffects = { happiness: 8, energy: -15, hunger: -12 };
+      } else if (finalScore >= 40) {
+        statEffects = { happiness: 3, energy: -12, hunger: -10 };
+      } else {
+        statEffects = { happiness: -10, energy: -15, hunger: -10 };
+      }
+
       setResult({
         score: finalScore,
         feedback: finalFeedback,
         points: finalPoints,
         tokens: finalTokens,
         isFallback: !!data.fallbackScore,
+        statEffects,
       });
 
       // Update regenmon stats
@@ -126,13 +140,13 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
 
   return (
     <Card style={{ maxWidth: "700px", margin: "0 auto" }}>
-      <h3 style={{ marginBottom: "1rem", fontSize: "1.2rem" }}>🎓 Entrenamiento</h3>
+      <h3 style={{ marginBottom: "0.75rem", fontSize: "0.85rem", color: "var(--orange)" }}>Entrenamiento</h3>
 
       {/* Category Selection */}
       {!result && (
         <div style={{ marginBottom: "1.5rem" }}>
-          <label style={{ fontSize: "0.8rem", marginBottom: "0.5rem", display: "block" }}>
-            Categoría:
+          <label style={{ fontSize: "0.6rem", marginBottom: "0.5rem", display: "block", color: "var(--fg-muted)" }}>
+            Categoria:
           </label>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "0.75rem" }}>
             {CATEGORIES.map((cat) => (
@@ -155,7 +169,7 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
                 }}
               >
                 <div>{cat.label}</div>
-                <div style={{ fontSize: "0.6rem", color: "#aaa", marginTop: "0.25rem" }}>
+                <div style={{ fontSize: "0.5rem", color: "var(--fg-dim)", marginTop: "0.25rem" }}>
                   {cat.description}
                 </div>
               </button>
@@ -181,7 +195,7 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
           >
             📸 Subir Captura
           </Button>
-          <p style={{ fontSize: "0.7rem", color: "#aaa", textAlign: "center", marginTop: "0.5rem" }}>
+          <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)", textAlign: "center", marginTop: "0.5rem" }}>
             Sube una captura de tu {CATEGORIES.find(c => c.value === selectedCategory)?.description}
           </p>
         </div>
@@ -205,7 +219,7 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
                 maxWidth: "100%",
                 maxHeight: "300px",
                 objectFit: "contain",
-                border: "2px solid #92cc41",
+                border: "2px solid var(--orange)",
               }}
             />
           </div>
@@ -241,20 +255,20 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
               marginBottom: "1.5rem",
               padding: "1.5rem",
               textAlign: "center",
-              backgroundColor: result.score >= 70 ? "#92cc4133" : result.score >= 40 ? "#f7d51d33" : "#e76e5533",
+              backgroundColor: result.score >= 70 ? "rgba(245, 158, 11, 0.15)" : result.score >= 40 ? "rgba(251, 191, 36, 0.15)" : "rgba(239, 68, 68, 0.15)",
             }}
           >
             <div style={{ fontSize: "3rem", marginBottom: "0.5rem" }}>
               {result.score >= 80 ? "🏆" : result.score >= 60 ? "⭐" : result.score >= 40 ? "👍" : "💪"}
             </div>
-            <h2 style={{ fontSize: "2.5rem", color: "#f7d51d", marginBottom: "0.5rem" }}>
+            <h2 style={{ fontSize: "1.8rem", color: "var(--yellow)", marginBottom: "0.5rem" }}>
               {result.score}/100
             </h2>
-            <p style={{ fontSize: "0.8rem", color: "#aaa" }}>
-              {result.score >= 80 ? "¡Excelente trabajo!" : result.score >= 60 ? "¡Buen trabajo!" : result.score >= 40 ? "Buen intento" : "Sigue practicando"}
+            <p style={{ fontSize: "0.6rem", color: "var(--fg-muted)" }}>
+              {result.score >= 80 ? "Excelente trabajo!" : result.score >= 60 ? "Buen trabajo!" : result.score >= 40 ? "Buen intento" : "Sigue practicando"}
             </p>
             {result.isFallback && (
-              <p style={{ fontSize: "0.7rem", color: "#e76e55", marginTop: "0.5rem" }}>
+              <p style={{ fontSize: "0.5rem", color: "var(--red)", marginTop: "0.5rem" }}>
                 ⚠️ Evaluación con score por defecto (API temporalmente no disponible)
               </p>
             )}
@@ -269,8 +283,8 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
               fontSize: "0.8rem",
             }}
           >
-            <h4 style={{ fontSize: "0.9rem", marginBottom: "0.5rem" }}>📝 Feedback:</h4>
-            <p style={{ lineHeight: "1.5" }}>{result.feedback}</p>
+            <h4 style={{ fontSize: "0.7rem", marginBottom: "0.5rem", color: "var(--orange)" }}>Feedback:</h4>
+            <p style={{ lineHeight: "1.6", fontSize: "0.6rem" }}>{result.feedback}</p>
           </div>
 
           {/* Rewards */}
@@ -279,27 +293,76 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
             style={{
               marginBottom: "1.5rem",
               padding: "1rem",
-              backgroundColor: "#209cee33",
+              backgroundColor: "rgba(59, 130, 246, 0.15)",
             }}
           >
-            <h4 style={{ fontSize: "0.9rem", marginBottom: "0.75rem" }}>🎁 Recompensas:</h4>
+            <h4 style={{ fontSize: "0.7rem", marginBottom: "0.75rem", color: "var(--orange)" }}>Recompensas:</h4>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: "1.5rem" }}>⭐</div>
-                <div style={{ fontSize: "1.2rem", color: "#f7d51d", fontWeight: "bold" }}>
+                <div style={{ fontSize: "0.9rem", color: "var(--yellow)", fontWeight: "bold" }}>
                   +{result.points}
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "#aaa" }}>Puntos</div>
+                <div style={{ fontSize: "0.55rem", color: "var(--fg-muted)" }}>Puntos</div>
               </div>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: "1.5rem" }}>🍎</div>
-                <div style={{ fontSize: "1.2rem", color: "#92cc41", fontWeight: "bold" }}>
+                <div style={{ fontSize: "0.9rem", color: "var(--orange)", fontWeight: "bold" }}>
                   +{result.tokens}
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "#aaa" }}>Tokens</div>
+                <div style={{ fontSize: "0.55rem", color: "var(--fg-muted)" }}>Tokens</div>
               </div>
             </div>
           </div>
+
+          {/* Stat Effects from Training */}
+          {result.statEffects && (
+            <div
+              className="nes-container is-rounded"
+              style={{
+                marginBottom: "1.5rem",
+                padding: "1rem",
+                backgroundColor: result.score >= 60 ? "rgba(34, 197, 94, 0.1)" : "rgba(239, 68, 68, 0.1)",
+              }}
+            >
+              <h4 style={{ fontSize: "0.7rem", marginBottom: "0.75rem", color: "var(--orange)" }}>Efecto en {regenmon.name}:</h4>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem", textAlign: "center" }}>
+                <div>
+                  <div style={{ fontSize: "0.9rem" }}>😊</div>
+                  <div style={{
+                    fontSize: "0.7rem",
+                    fontWeight: "bold",
+                    color: result.statEffects.happiness >= 0 ? "var(--green)" : "var(--red)"
+                  }}>
+                    {result.statEffects.happiness >= 0 ? "+" : ""}{result.statEffects.happiness}
+                  </div>
+                  <div style={{ fontSize: "0.45rem", color: "var(--fg-muted)" }}>Felicidad</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.9rem" }}>⚡</div>
+                  <div style={{
+                    fontSize: "0.7rem",
+                    fontWeight: "bold",
+                    color: result.statEffects.energy >= 0 ? "var(--blue)" : "var(--red)"
+                  }}>
+                    {result.statEffects.energy >= 0 ? "+" : ""}{result.statEffects.energy}
+                  </div>
+                  <div style={{ fontSize: "0.45rem", color: "var(--fg-muted)" }}>Energia</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.9rem" }}>🍔</div>
+                  <div style={{
+                    fontSize: "0.7rem",
+                    fontWeight: "bold",
+                    color: result.statEffects.hunger >= 0 ? "var(--green)" : "var(--red)"
+                  }}>
+                    {result.statEffects.hunger >= 0 ? "+" : ""}{result.statEffects.hunger}
+                  </div>
+                  <div style={{ fontSize: "0.45rem", color: "var(--fg-muted)" }}>Hambre</div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Evolution Progress */}
           <div
@@ -317,7 +380,7 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
               Total: {regenmon.totalPoints} pts | Stage {regenmon.stage}/3
             </p>
             {regenmon.stage < 3 && (
-              <p style={{ color: "#aaa", marginTop: "0.25rem" }}>
+              <p style={{ color: "var(--fg-muted)", marginTop: "0.25rem" }}>
                 Próxima evolución: {regenmon.stage === 1 ? 500 : 1500} pts
               </p>
             )}
@@ -337,14 +400,14 @@ export function TrainingSystem({ regenmon, onTrainingComplete }: TrainingSystemP
       {/* Loading State */}
       {isEvaluating && (
         <div style={{ textAlign: "center", padding: "2rem" }}>
-          <p style={{ fontSize: "1rem", marginBottom: "1rem" }}>🤖 IA evaluando...</p>
-          <p style={{ fontSize: "0.7rem", color: "#aaa" }}>Esto puede tomar unos segundos</p>
+          <p style={{ fontSize: "0.7rem", marginBottom: "0.75rem", color: "var(--orange)" }}>IA evaluando...</p>
+          <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)" }}>Esto puede tomar unos segundos</p>
         </div>
       )}
 
       {/* Info */}
       {!result && (
-        <p style={{ fontSize: "0.7rem", color: "#aaa", marginTop: "1rem", textAlign: "center" }}>
+        <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)", marginTop: "1rem", textAlign: "center" }}>
           💡 Sube capturas de tu trabajo para ganar puntos y tokens
         </p>
       )}

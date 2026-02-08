@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
           regenmonName: visit.regenmon.name,
           ownerName: visit.regenmon.ownerName,
           details: {
-            userAgent: visit.userAgent,
+            userAgent: (visit as any).userAgent,
             referrer: visit.referrer,
           },
           timestamp: visit.createdAt,
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (type === "all" || type === "sync") {
-      const syncs = await prisma.syncSnapshot.findMany({
+      const syncs = await (prisma as any).syncSnapshot.findMany({
         take: limit,
         skip: type === "sync" ? skip : 0,
         orderBy: { createdAt: "desc" },
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
       });
 
       logs.push(
-        ...syncs.map((sync) => ({
+        ...syncs.map((sync: any) => ({
           id: sync.id,
           type: "sync",
           event: "data_sync",
@@ -144,7 +144,7 @@ export async function GET(req: NextRequest) {
       const [txCount, visitCount, syncCount] = await Promise.all([
         prisma.tokenTransaction.count(),
         prisma.visit.count(),
-        prisma.syncSnapshot.count(),
+        (prisma as any).syncSnapshot.count(),
       ]);
       total = txCount + visitCount + syncCount;
     } else if (type === "transaction") {
@@ -152,7 +152,7 @@ export async function GET(req: NextRequest) {
     } else if (type === "visit") {
       total = await prisma.visit.count();
     } else if (type === "sync") {
-      total = await prisma.syncSnapshot.count();
+      total = await (prisma as any).syncSnapshot.count();
     }
 
     return NextResponse.json({

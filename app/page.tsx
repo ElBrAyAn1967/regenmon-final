@@ -38,31 +38,31 @@ export default function HomePage() {
       <Navbar />
       <div className="container" style={{ minHeight: "calc(100vh - 12rem)" }}>
         {/* Header */}
-        <div className="text-center mb-4">
-          <h1 style={{ fontSize: "2rem", color: "#92cc41", marginBottom: "1rem" }}>
-            🎮 Regenmon Hub
+        <div className="text-center mb-4" style={{ paddingTop: "3rem" }}>
+          <h1 style={{ fontSize: "2.5rem", color: "var(--fg-primary)", marginBottom: "1.5rem", lineHeight: "1.4" }}>
+            <span style={{ color: "var(--orange)" }}>Regenmon</span> Hub
           </h1>
-          <p style={{ fontSize: "0.9rem", maxWidth: "600px", margin: "0 auto", lineHeight: "1.6" }}>
+          <p style={{ fontSize: "1rem", maxWidth: "700px", margin: "0 auto", lineHeight: "2", color: "var(--fg-muted)" }}>
             Bootcamp de programacion con Tamagotchis virtuales.
             <br />
-            Aprende, entrena tu Regenmon, y gana tokens $FRUTA.
+            Aprende, entrena tu Regenmon, y gana tokens <span style={{ color: "var(--orange)" }}>$FRUTA</span>.
           </p>
         </div>
 
         {/* Demo Button - GRANDE */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: "3rem" }}>
-          <Link href="/demo">
+          <Link href="/demo" style={{ textDecoration: "none" }}>
             <button
               type="button"
-              className="nes-btn is-success"
+              className="nes-btn is-primary"
               style={{
-                fontSize: "1.5rem",
-                padding: "2rem 3rem",
+                fontSize: "1.8rem",
+                padding: "2rem 4rem",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 gap: "1rem",
-                minWidth: "300px",
+                minWidth: "320px",
               }}
             >
               <div style={{ fontSize: "4rem" }}>👾</div>
@@ -76,30 +76,30 @@ export default function HomePage() {
           <Card centered>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "3rem" }}>👾</div>
-              <div style={{ fontSize: "2rem", color: "#209cee", margin: "1rem 0" }}>
+              <div style={{ fontSize: "2.5rem", color: "var(--orange)", margin: "1rem 0" }}>
                 {stats?.totalRegenmons || 0}
               </div>
-              <div style={{ fontSize: "0.8rem" }}>Regenmons</div>
+              <div style={{ fontSize: "1rem", color: "var(--fg-muted)" }}>Regenmons</div>
             </div>
           </Card>
 
           <Card centered>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "3rem" }}>⭐</div>
-              <div style={{ fontSize: "2rem", color: "#f7d51d", margin: "1rem 0" }}>
+              <div style={{ fontSize: "2.5rem", color: "var(--yellow)", margin: "1rem 0" }}>
                 {stats?.totalPoints?.toLocaleString() || 0}
               </div>
-              <div style={{ fontSize: "0.8rem" }}>Total Points</div>
+              <div style={{ fontSize: "1rem", color: "var(--fg-muted)" }}>Total Points</div>
             </div>
           </Card>
 
           <Card centered>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "3rem" }}>🍎</div>
-              <div style={{ fontSize: "2rem", color: "#92cc41", margin: "1rem 0" }}>
+              <div style={{ fontSize: "2.5rem", color: "var(--orange)", margin: "1rem 0" }}>
                 {stats?.totalTokensDistributed?.toLocaleString() || 0}
               </div>
-              <div style={{ fontSize: "0.8rem" }}>$FRUTA Tokens</div>
+              <div style={{ fontSize: "1rem", color: "var(--fg-muted)" }}>$FRUTA Tokens</div>
             </div>
           </Card>
         </div>
@@ -108,11 +108,11 @@ export default function HomePage() {
         {stats?.topRegenmon && (
           <Card centered style={{ maxWidth: "600px", margin: "3rem auto" }}>
             <div style={{ textAlign: "center" }}>
-              <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>🏆 Top Regenmon</h3>
-              <p>
-                <strong>{stats.topRegenmon.name}</strong> by {stats.topRegenmon.owner}
+              <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem", color: "var(--fg-primary)" }}>🏆 Top Regenmon</h3>
+              <p style={{ fontSize: "1.1rem" }}>
+                <strong style={{ color: "var(--orange)" }}>{stats.topRegenmon.name}</strong> by {stats.topRegenmon.owner}
               </p>
-              <p style={{ fontSize: "0.8rem", marginTop: "0.5rem", color: "#92cc41" }}>
+              <p style={{ fontSize: "0.9rem", marginTop: "0.5rem", color: "var(--orange)" }}>
                 {stats.topRegenmon.points} points • {stats.topRegenmon.balance} $FRUTA
               </p>
             </div>
@@ -120,12 +120,12 @@ export default function HomePage() {
         )}
 
         {/* CTA Buttons */}
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "3rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", marginTop: "3rem", flexWrap: "wrap", paddingBottom: "2rem" }}>
           <Link href="/register">
-            <Button variant="primary">📝 Register Regenmon</Button>
+            <Button variant="primary" style={{ fontSize: "1rem", padding: "0.8rem 1.5rem" }}>📝 Register Regenmon</Button>
           </Link>
           <Link href="/leaderboard">
-            <Button variant="warning">🏆 Leaderboard</Button>
+            <Button variant="warning" style={{ fontSize: "1rem", padding: "0.8rem 1.5rem" }}>🏆 Leaderboard</Button>
           </Link>
         </div>
       </div>

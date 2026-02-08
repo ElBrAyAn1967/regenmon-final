@@ -5,10 +5,16 @@
 
 export function Footer() {
   return (
-    <footer style={{ padding: "2rem", textAlign: "center", backgroundColor: "#212529", color: "#fff", marginTop: "4rem" }}>
-      <p style={{ fontSize: "0.8rem" }}>🚀 Powered by Next.js + Supabase + Privy + Gemini</p>
-      <p style={{ fontSize: "0.7rem", marginTop: "1rem", color: "#92cc41" }}>
-        Fase 1: Backend APIs ✅ | Fase 2: Frontend Público 🔄
+    <footer style={{
+      padding: "1rem",
+      textAlign: "center",
+      backgroundColor: "var(--bg-card)",
+      borderTop: "1px solid var(--border-color)",
+      marginTop: "3rem"
+    }}>
+      <p style={{ fontSize: "0.5rem", color: "var(--fg-dim)" }}>Powered by Next.js + Supabase + Privy + Gemini</p>
+      <p style={{ fontSize: "0.45rem", marginTop: "0.5rem", color: "var(--fg-muted)" }}>
+        Regenmon Hub &copy; 2025
       </p>
     </footer>
   );

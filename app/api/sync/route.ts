@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
           regenmonId: data.regenmonId,
           balance: updated.balance,
           totalPoints: data.totalPoints,
-          trainingHistory: data.trainingHistory,
+          trainingHistory: data.trainingHistory as any,
         },
       });
 

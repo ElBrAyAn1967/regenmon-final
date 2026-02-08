@@ -11,10 +11,10 @@ import { getClientIP } from "@/app/lib/ratelimit";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     // ==============================================
     // BUSCAR REGENMON CON CONTEO DE VISITAS

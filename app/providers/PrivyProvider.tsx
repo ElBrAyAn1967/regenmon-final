@@ -18,17 +18,14 @@ export function PrivyProvider({ children }: { children: React.ReactNode }) {
       config={{
         loginMethods: ["email", "google", "sms", "twitter", "discord", "github", "apple"],
         appearance: {
-          theme: "light",
-          accentColor: "#209cee",
+          theme: "dark",
+          accentColor: "#f59e0b",
           // Sin logo personalizado para evitar errores de carga
         },
         embeddedWallets: {
-          createOnLogin: "off", // NO crear wallets
+          ethereum: { createOnLogin: "off" },
         },
         defaultChain: undefined, // NO usar blockchain
-      }}
-      onSuccess={() => {
-        router.push("/"); // Redirigir después de login
       }}
     >
       {children}

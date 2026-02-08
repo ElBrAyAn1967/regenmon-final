@@ -63,7 +63,7 @@ export default function RegisterPage() {
               <p style={{ fontSize: "0.8rem", marginBottom: "1rem" }}>
                 Your Regenmon has been successfully registered.
               </p>
-              <p style={{ fontSize: "0.7rem", color: "#92cc41" }}>ID: {registeredId}</p>
+              <p style={{ fontSize: "0.7rem", color: "var(--orange)" }}>ID: {registeredId}</p>
               <p style={{ fontSize: "0.7rem", marginTop: "1rem" }}>Redirecting...</p>
             </div>
           </Card>
@@ -77,12 +77,12 @@ export default function RegisterPage() {
     <>
       <Navbar />
       <div className="container" style={{ minHeight: "calc(100vh - 12rem)" }}>
-        <h1 style={{ fontSize: "1.8rem", textAlign: "center", marginBottom: "2rem", color: "#92cc41" }}>
+        <h1 style={{ fontSize: "2.2rem", textAlign: "center", marginBottom: "2rem", color: "var(--orange)" }}>
           📝 Register Regenmon
         </h1>
 
         {!authenticated && (
-          <div className="nes-container is-dark" style={{ maxWidth: "600px", margin: "0 auto 2rem", backgroundColor: "#209cee" }}>
+          <div className="nes-container is-dark" style={{ maxWidth: "600px", margin: "0 auto 2rem", backgroundColor: "rgba(245, 158, 11, 0.15)" }}>
             <p style={{ fontSize: "0.8rem" }}>💡 Login to auto-fill your info</p>
           </div>
         )}

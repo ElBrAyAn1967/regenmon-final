@@ -1,31 +1,318 @@
-/* app/globals.css - Estilos globales para NES.css */
+/* app/globals.css - Estilos globales para NES.css + Paleta Frutero */
+
+/* === RESET === */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* === PALETA FRUTERO SOBRE NES.CSS === */
+:root {
+  --bg-primary: #13131a;
+  --bg-card: #13131a;
+  --bg-card-light: #1a1a24;
+  --fg-primary: #f5f5f5;
+  --fg-muted: #9ca3af;
+  --fg-dim: #6b7280;
+  --orange: #f59e0b;
+  --orange-light: #fbbf24;
+  --orange-dark: #d97706;
+  --pink: #c926a6;
+  --pink-light: #e040bf;
+  --green: #34d399;
+  --green-dark: #10b981;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --yellow: #fbbf24;
+  --border-color: #2a2a3a;
+  --border-glow: rgba(245, 158, 11, 0.3);
+}
+
 body {
   font-family: "Press Start 2P", cursive;
-  background-color: #212529;
-  color: #fff;
+  background-color: var(--bg-primary) !important;
+  color: var(--fg-primary) !important;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Clases helper para spacing (NES.css no incluye utilities) */
+/* === NES.CSS COLOR OVERRIDES === */
+
+/* Containers - dark theme matching frutero */
+.nes-container {
+  background-color: var(--bg-card);
+  border-color: var(--border-color) !important;
+  color: var(--fg-primary);
+}
+
+.nes-container.is-dark {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color) !important;
+  color: var(--fg-primary);
+}
+
+.nes-container.is-rounded {
+  border-color: var(--border-color) !important;
+}
+
+.nes-container.with-title > .title {
+  background-color: var(--bg-primary);
+  color: var(--orange);
+}
+
+/* Buttons - orange primary instead of blue */
+.nes-btn.is-primary {
+  background-color: var(--orange) !important;
+  color: #000 !important;
+  border-image-source: none !important;
+  border-color: var(--orange-dark) !important;
+}
+
+.nes-btn.is-primary::after {
+  box-shadow: inset -4px -4px var(--orange-dark) !important;
+}
+
+.nes-btn.is-success {
+  background-color: var(--green) !important;
+  color: #000 !important;
+  border-color: var(--green-dark) !important;
+}
+
+.nes-btn.is-warning {
+  background-color: var(--yellow) !important;
+  color: #000 !important;
+  border-color: #b8860b !important;
+}
+
+.nes-btn.is-error {
+  background-color: var(--red) !important;
+  color: #fff !important;
+  border-color: #b91c1c !important;
+}
+
+.nes-btn {
+  font-size: 0.65rem !important;
+  padding: 0.4rem 0.8rem !important;
+  background-color: var(--bg-card) !important;
+  color: var(--fg-primary) !important;
+  border-image-source: none !important;
+  border-color: var(--border-color) !important;
+  outline: none !important;
+}
+
+.nes-btn:focus,
+.nes-btn:hover,
+.nes-btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.nes-btn::after {
+  box-shadow: inset -4px -4px var(--border-color) !important;
+}
+
+.nes-btn.is-success::after {
+  box-shadow: inset -4px -4px var(--green-dark) !important;
+}
+
+.nes-btn.is-warning::after {
+  box-shadow: inset -4px -4px #b8860b !important;
+}
+
+.nes-btn.is-error::after {
+  box-shadow: inset -4px -4px #b91c1c !important;
+}
+
+/* Inputs */
+.nes-input {
+  background-color: var(--bg-primary) !important;
+  color: var(--fg-primary) !important;
+  border-color: var(--border-color) !important;
+  font-size: 0.65rem !important;
+}
+
+.nes-input:focus {
+  border-color: var(--orange) !important;
+  outline: none;
+}
+
+.nes-input::placeholder {
+  color: var(--fg-dim) !important;
+}
+
+/* Progress bars - themed colors */
+.nes-progress {
+  height: 16px !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Balloons */
+.nes-balloon {
+  background-color: var(--bg-card-light) !important;
+  border-color: var(--border-color) !important;
+  color: var(--fg-primary) !important;
+}
+
+.nes-balloon::before,
+.nes-balloon::after {
+  border-color: var(--border-color) !important;
+}
+
+/* Badge */
+.nes-badge .is-success {
+  background-color: var(--green) !important;
+  color: #000 !important;
+}
+
+/* === LAYOUT HELPERS === */
 .container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem 1rem;
 }
 
+/* === SPACING === */
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
 .mt-4 { margin-top: 2rem; }
-
 .mb-1 { margin-bottom: 0.5rem; }
 .mb-2 { margin-bottom: 1rem; }
 .mb-3 { margin-bottom: 1.5rem; }
 .mb-4 { margin-bottom: 2rem; }
-
 .text-center { text-align: center; }
+
+/* === DEMO SPECIFIC STYLES === */
+
+/* Smaller, proportioned fonts for demo */
+.demo-title {
+  font-size: 1.1rem;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+}
+
+.demo-subtitle {
+  font-size: 0.6rem;
+  color: var(--fg-muted);
+  line-height: 1.8;
+}
+
+.demo-section-title {
+  font-size: 0.8rem;
+  color: var(--fg-primary);
+  margin-bottom: 0.75rem;
+}
+
+.demo-label {
+  font-size: 0.6rem;
+  color: var(--fg-muted);
+}
+
+.demo-value {
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.demo-info {
+  font-size: 0.55rem;
+  color: var(--fg-dim);
+  line-height: 1.8;
+}
+
+/* Tab buttons */
+.demo-tab {
+  font-size: 0.6rem !important;
+  padding: 0.35rem 0.7rem !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.demo-tab:hover {
+  transform: translateY(-2px);
+}
+
+.demo-tab.active {
+  box-shadow: 0 0 12px var(--border-glow);
+}
+
+/* Cards with subtle glow on hover */
+.demo-card-glow {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.demo-card-glow:hover {
+  border-color: var(--orange) !important;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+}
+
+/* Score colors */
+.score-excellent { color: var(--green); }
+.score-good { color: var(--orange); }
+.score-ok { color: var(--yellow); }
+.score-low { color: var(--red); }
+
+/* Stat colors */
+.stat-high { color: var(--green); }
+.stat-mid { color: var(--yellow); }
+.stat-low { color: var(--red); }
+
+/* Orange accent text */
+.text-orange { color: var(--orange); }
+.text-pink { color: var(--pink); }
+.text-green { color: var(--green); }
+.text-yellow { color: var(--yellow); }
+.text-blue { color: var(--blue); }
+.text-muted { color: var(--fg-muted); }
+.text-dim { color: var(--fg-dim); }
+
+/* Background accents */
+.bg-orange-subtle { background-color: rgba(245, 158, 11, 0.1); }
+.bg-green-subtle { background-color: rgba(52, 211, 153, 0.1); }
+.bg-pink-subtle { background-color: rgba(201, 38, 166, 0.1); }
+.bg-red-subtle { background-color: rgba(239, 68, 68, 0.1); }
+.bg-blue-subtle { background-color: rgba(59, 130, 246, 0.1); }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(245, 158, 11, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
+}
+
+/* Scrollbar hidden */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}

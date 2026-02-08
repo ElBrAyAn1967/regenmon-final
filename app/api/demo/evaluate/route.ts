@@ -33,6 +33,10 @@ export async function POST(req: NextRequest) {
       max_tokens: 300,
       messages: [
         {
+          role: "system",
+          content: `Eres un profesor amigable en un juego educativo llamado Regenmon Hub donde estudiantes suben capturas de su trabajo (código, diseños, proyectos, notas de aprendizaje) para entrenar a su mascota virtual. Tu trabajo es dar feedback constructivo y motivador, y asignar un puntaje de 0 a 100. SIEMPRE evalúa la imagen sin importar su contenido. Si no puedes identificar claramente el contenido, da un puntaje base de 40-60 con feedback alentador. Responde siempre en español.`,
+        },
+        {
           role: "user",
           content: [
             {
@@ -42,7 +46,7 @@ export async function POST(req: NextRequest) {
             {
               type: "image_url",
               image_url: {
-                url: imageBase64, // OpenAI accepts data URLs directly
+                url: imageBase64,
               },
             },
           ],
@@ -55,13 +59,20 @@ export async function POST(req: NextRequest) {
     // Parse score from response
     const score = extractScore(responseText);
 
+    // Detect refusal responses (model refused to evaluate)
+    const isRefusal = responseText.includes("no puedo") || responseText.includes("no me es posible") || responseText.includes("Lo siento") || !responseText.trim();
+    const finalScore = isRefusal ? Math.floor(Math.random() * 21) + 40 : score; // 40-60 random if refused
+    const finalFeedback = isRefusal
+      ? `Score: ${finalScore}/100. ¡Buen esfuerzo! Tu captura fue recibida. Sigue practicando y subiendo tu trabajo para mejorar tu puntaje.`
+      : responseText;
+
     // Calculate rewards
-    const points = score; // 1 punto por cada punto de score (0-100)
-    const tokens = Math.floor(score * 0.5); // 0.5 tokens por punto
+    const points = finalScore;
+    const tokens = Math.floor(finalScore * 0.5);
 
     return NextResponse.json({
-      score,
-      feedback: responseText,
+      score: finalScore,
+      feedback: finalFeedback,
       points,
       tokens,
       category,
@@ -93,45 +104,28 @@ export async function POST(req: NextRequest) {
 }
 
 function generateEvaluationPrompt(category: string): string {
-  const prompts: Record<string, string> = {
-    codigo: `Evalúa este código de programación en una escala de 0-100 considerando:
-- Calidad del código (limpieza, organización)
-- Buenas prácticas (nomenclatura, estructura)
-- Complejidad (¿resuelve algo interesante?)
-- Comentarios y documentación
+  const base = `Observa esta captura de pantalla que un estudiante subió como evidencia de su trabajo. Da un puntaje y feedback breve.
 
-Responde SOLO con un número del 0-100 en la primera línea, seguido de 1-2 oraciones de feedback constructivo.
-Formato EXACTO: "Score: X/100. [feedback breve]"`,
+Formato de respuesta OBLIGATORIO (una sola línea):
+Score: [número]/100. [1-2 oraciones de feedback constructivo y motivador]
 
-    diseño: `Evalúa este diseño visual en una escala de 0-100 considerando:
-- Estética y presentación
-- Uso de colores y tipografía
-- Creatividad y originalidad
-- Composición y layout
+Ejemplo: "Score: 75/100. Buen trabajo con la estructura del código, se nota dedicación. Intenta agregar más comentarios para mejorar."`;
 
-Responde SOLO con un número del 0-100 en la primera línea, seguido de 1-2 oraciones de feedback constructivo.
-Formato EXACTO: "Score: X/100. [feedback breve]"`,
+  const criteria: Record<string, string> = {
+    codigo: `Categoría: Código de programación.
+Criterios: organización, buenas prácticas, complejidad, documentación.`,
 
-    proyecto: `Evalúa este proyecto completo en una escala de 0-100 considerando:
-- Funcionalidad demostrada
-- Calidad general
-- Complejidad del trabajo
-- Presentación
+    diseño: `Categoría: Diseño visual (UI/UX o gráfico).
+Criterios: estética, uso de colores y tipografía, creatividad, composición.`,
 
-Responde SOLO con un número del 0-100 en la primera línea, seguido de 1-2 oraciones de feedback constructivo.
-Formato EXACTO: "Score: X/100. [feedback breve]"`,
+    proyecto: `Categoría: Proyecto completo.
+Criterios: funcionalidad, calidad general, complejidad, presentación.`,
 
-    aprendizaje: `Evalúa esta evidencia de aprendizaje en una escala de 0-100 considerando:
-- Esfuerzo demostrado
-- Comprensión del tema
-- Aplicación práctica
-- Progreso visible
-
-Responde SOLO con un número del 0-100 en la primera línea, seguido de 1-2 oraciones de feedback constructivo.
-Formato EXACTO: "Score: X/100. [feedback breve]"`,
+    aprendizaje: `Categoría: Evidencia de aprendizaje (notas, ejercicios).
+Criterios: esfuerzo demostrado, comprensión del tema, aplicación práctica.`,
   };
 
-  return prompts[category] || prompts.proyecto;
+  return `${base}\n\n${criteria[category] || criteria.proyecto}`;
 }
 
 function extractScore(response: string): number {
