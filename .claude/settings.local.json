@@ -35,7 +35,8 @@
       "mcp__playwright__browser_take_screenshot",
       "Bash(npx next build:*)",
       "mcp__sequential-thinking__sequentialthinking",
-      "Bash(bun run build:*)"
+      "Bash(bun run build:*)",
+      "Bash(xargs ls:*)"
     ]
   }
 }
