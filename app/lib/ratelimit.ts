@@ -1,34 +1,35 @@
 // ==============================================
-// RATE LIMITING - UPSTASH REDIS
+// RATE LIMITING - UPSTASH REDIS (OPTIONAL)
 // ==============================================
 // Previene abuso de APIs con sliding window (10 requests/min)
+// Si no hay Redis configurado, permite todas las requests (dev mode)
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-// Validar variables de entorno
-if (!process.env.UPSTASH_REDIS_REST_URL) {
-  throw new Error("UPSTASH_REDIS_REST_URL is not defined");
-}
+// Check if Redis is configured
+const REDIS_CONFIGURED = 
+  process.env.UPSTASH_REDIS_REST_URL && 
+  process.env.UPSTASH_REDIS_REST_TOKEN;
 
-if (!process.env.UPSTASH_REDIS_REST_TOKEN) {
-  throw new Error("UPSTASH_REDIS_REST_TOKEN is not defined");
-}
+// Cliente Redis (solo si está configurado)
+const redis = REDIS_CONFIGURED 
+  ? new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL!,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    })
+  : null;
 
-// Cliente Redis
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
-
-// Rate limiter con sliding window
+// Rate limiter con sliding window (solo si hay Redis)
 // 10 requests por 1 minuto
-export const ratelimit = new Ratelimit({
-  redis,
-  limiter: Ratelimit.slidingWindow(10, "1 m"),
-  analytics: true,
-  prefix: "regenmon",
-});
+export const ratelimit = redis 
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(10, "1 m"),
+      analytics: true,
+      prefix: "regenmon",
+    })
+  : null;
 
 /**
  * Verifica si un identificador ha excedido el rate limit
@@ -36,6 +37,12 @@ export const ratelimit = new Ratelimit({
  * @returns { success: boolean, remaining: number }
  */
 export async function checkRateLimit(identifier: string) {
+  // Si no hay rate limiter configurado, permitir todo (dev mode)
+  if (!ratelimit) {
+    console.warn("⚠️ Rate limiting disabled - no Redis configured");
+    return { success: true, remaining: 999, reset: Date.now() + 60000 };
+  }
+  
   try {
     const { success, remaining, reset } = await ratelimit.limit(identifier);
     return { success, remaining, reset };
