@@ -32,17 +32,25 @@ export async function POST(req: NextRequest) {
     const data = RegisterRegenmonSchema.parse(body);
 
     // ==============================================
-    // VERIFICAR URL ÚNICA
+    // SI YA EXISTE POR URL → DEVOLVER DATOS EXISTENTES
     // ==============================================
     const existingByUrl = await prisma.registeredRegenmon.findUnique({
       where: { appUrl: data.appUrl },
     });
 
     if (existingByUrl) {
-      throw new ApiError(
-        409,
-        "A Regenmon with this URL already exists",
-        { field: "appUrl", value: data.appUrl }
+      return successResponse(
+        {
+          id: existingByUrl.id,
+          name: existingByUrl.name,
+          appUrl: existingByUrl.appUrl,
+          balance: existingByUrl.balance,
+          totalPoints: existingByUrl.totalPoints,
+          registeredAt: existingByUrl.registeredAt,
+          alreadyRegistered: true,
+        },
+        "Regenmon already registered! Welcome back 🎉",
+        200
       );
     }
 
