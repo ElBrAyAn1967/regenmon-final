@@ -47,11 +47,7 @@ export const RegisterRegenmonSchema = z.object({
   privyUserId: z.string().optional(),
   appUrl: z
     .string()
-    .url("Invalid URL format")
-    .refine(
-      (url) => url.includes("vercel.app") || url.includes("localhost"),
-      "URL must be from Vercel or localhost"
-    ),
+    .url("Invalid URL format"),
   sprite: z.string().url("Sprite must be a valid URL"),
 });
 
