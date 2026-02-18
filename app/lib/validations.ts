@@ -74,6 +74,30 @@ export const FeedRegenmonSchema = z.object({
 });
 
 // ==============================================
+// SOCIAL: FEED ANOTHER REGENMON
+// ==============================================
+export const FeedOtherRegenmonSchema = z.object({
+  fromRegenmonId: z.string().cuid("Invalid sender Regenmon ID"),
+});
+
+// ==============================================
+// SOCIAL: GIFT TOKENS TO ANOTHER REGENMON
+// ==============================================
+export const GiftTokensSchema = z.object({
+  fromRegenmonId: z.string().cuid("Invalid sender Regenmon ID"),
+  amount: z.number().int().min(1, "Amount must be at least 1").max(1000, "Amount too large"),
+});
+
+// ==============================================
+// SOCIAL: SEND MESSAGE TO ANOTHER REGENMON
+// ==============================================
+export const SendMessageSchema = z.object({
+  fromRegenmonId: z.string().cuid("Invalid sender Regenmon ID"),
+  fromName: z.string().min(1).max(100),
+  message: z.string().min(1, "Message is required").max(140, "Message must be 140 characters or less"),
+});
+
+// ==============================================
 // QUERY PARAMS - LEADERBOARD
 // ==============================================
 export const LeaderboardQuerySchema = z.object({
@@ -90,4 +114,7 @@ export type TrainingHistory = z.infer<typeof TrainingHistorySchema>;
 export type RegisterRegenmonInput = z.infer<typeof RegisterRegenmonSchema>;
 export type SyncRegenmonInput = z.infer<typeof SyncRegenmonSchema>;
 export type FeedRegenmonInput = z.infer<typeof FeedRegenmonSchema>;
+export type FeedOtherRegenmonInput = z.infer<typeof FeedOtherRegenmonSchema>;
+export type GiftTokensInput = z.infer<typeof GiftTokensSchema>;
+export type SendMessageInput = z.infer<typeof SendMessageSchema>;
 export type LeaderboardQuery = z.infer<typeof LeaderboardQuerySchema>;

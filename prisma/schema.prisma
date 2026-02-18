@@ -37,6 +37,8 @@ model RegisteredRegenmon {
   snapshots       Snapshot[]
   visits          Visit[]
   transactions    TokenTransaction[]
+  receivedMessages Message[] @relation("receivedMessages")
+  sentMessages     Message[] @relation("sentMessages")
 
   @@index([registeredAt])
   @@index([totalPoints])
@@ -117,6 +119,27 @@ model TokenTransaction {
   @@index([regenmonId, createdAt])
   @@index([type])
   @@index([createdAt])
+}
+
+// ==============================================
+// TABLA: Message
+// Mensajes entre Regenmons (interacción social)
+// ==============================================
+model Message {
+  id              String   @id @default(cuid())
+  regenmonId      String   // Regenmon que RECIBE el mensaje
+  regenmon        RegisteredRegenmon @relation("receivedMessages", fields: [regenmonId], references: [id], onDelete: Cascade)
+
+  fromRegenmonId  String   // Regenmon que ENVÍA el mensaje
+  fromRegenmon    RegisteredRegenmon @relation("sentMessages", fields: [fromRegenmonId], references: [id], onDelete: Cascade)
+
+  fromName        String   // Nombre del remitente (cache para no buscar)
+  message         String   // Texto del mensaje (max 140 chars)
+
+  createdAt       DateTime @default(now())
+
+  @@index([regenmonId, createdAt])
+  @@index([fromRegenmonId])
 }
 
 // ==============================================
