@@ -51,3 +51,6 @@ supabase-credentials.txt
 next-env.d.ts
 
 /app/generated/prisma
+
+# ⛔ mínimo obligatorio · C:\dev\REGLAS.md regla 4
+node_modules/
