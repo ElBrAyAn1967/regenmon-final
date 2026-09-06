@@ -36,7 +36,14 @@
       "Bash(npx next build:*)",
       "mcp__sequential-thinking__sequentialthinking",
       "Bash(bun run build:*)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(npx prisma db execute:*)",
+      "Bash(for ext in tsx ts css json sql mjs)",
+      "Bash(do echo -n \"$ext: \")",
+      "Bash(find:*)",
+      "Bash(done)"
     ]
   }
 }
